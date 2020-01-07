@@ -1,3 +1,7 @@
 [user]
 	name = Andrew Lamzed-Short
 	email = a.lamzedshort@gmail.com
+[color]
+	ui = true
+[alias]
+	st = status

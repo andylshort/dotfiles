@@ -1,31 +1,45 @@
-if &compatible
-    set nocompatible
-endif
+" Remove need for vi compatability
+set nocompatible
 
 set noswapfile
 
-set mouse=a
-
+ " File encoding
 set enc=utf-8
 set fenc=utf-8
 set termencoding=utf-8
 set fileformat=unix
 
-syntax enable
-set number relativenumber
-
 filetype plugin indent on
+syntax enable
+
+" Display
+set number
+set relativenumber
+
+set list
+set listchars=tab:»·,space:·,eol:$,trail:◦,extends:▶,precedes:◀
+highlight SpecialKey ctermfg=8 guifg=DimGrey
+
+" Indentation
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 set autoindent
 set smartindent
 set cindent
 
-set tabstop=4
-set shiftwidth=4
-set expandtab
+" Search
+set hlsearch " highlight all items matching search
+set incsearch " highlight matches as search term is typed
 
-set list
-set lcs=tab:»·,space:·,eol:$,trail:◦,extends:▶,precedes:◀
-highlight SpecialKey ctermfg=8 guifg=DimGrey
+" Other
+set mouse=a
 
-set hlsearch
+" Filetype-specifc
+if has("autocmd")
+    augroup makefile
+        autocmd!
+        autocmd BufEnter Makefile setlocal noexpandtab
+    augroup END
+endif
