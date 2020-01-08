@@ -1,6 +1,8 @@
+autoload -U colors; colors
+
 # variables
-export VISUAL=vim
-export EDITOR=vim
+export VISUAL="vim"
+export EDITOR="vim"
 
 export GREP_OPTIONS="--color=auto"
 
@@ -31,9 +33,28 @@ alias g="git"
 alias ll="ls -la"
 alias rzsh="source ~/.zshrc"
 
+# functions
+git_branch_name() {
+    ref=$(git symbolic-ref HEAD 2>/dev/null) || return
+    echo "${ref#refs/heads/}"
+}
+
+print_git_repo() {
+    if $(! git status -s &> /dev/null)
+    then
+        echo ""
+    else
+        if [[ $(git status --porcelain) == "" ]]
+        then
+            echo "%{$fg[green]%}($(git_branch_name)"
+        else
+            echo "%{$fg[red]%}($(git_branch_name))*"
+        fi
+    fi
+}
+
 # prompt
-autoload colors && colors
-PROMPT="%n@%m %{$fg[green]%}[%~]%{$reset_color%}"$'\n'"\$ "
+PROMPT="%n@%m %{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}"$'\n'"\$ "
 
 # path
 export PATH="$HOME/bin:$PATH"
