@@ -32,7 +32,8 @@ alias ll="ls -la"
 alias rzsh="source ~/.zshrc"
 
 # prompt
-PROMPT="%n@%m [%~]"$'\n'"\$ "
+autoload colors && colors
+PROMPT="%n@%m %{$fg[green]%}[%~]%{$reset_color%}"$'\n'"\$ "
 
 # path
 export PATH="$HOME/bin:$PATH"
