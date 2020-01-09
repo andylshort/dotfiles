@@ -34,12 +34,12 @@ alias ll="ls -la"
 alias rzsh="source ~/.zshrc"
 
 # functions
-git_branch_name() {
+function git_branch_name() {
     ref=$(git symbolic-ref HEAD 2>/dev/null) || return
     echo "${ref#refs/heads/}"
 }
 
-print_git_repo() {
+function print_git_repo() {
     if $(! git status -s &> /dev/null)
     then
         echo ""
@@ -54,7 +54,8 @@ print_git_repo() {
 }
 
 # prompt
-PROMPT="%n@%m %{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}"$'\n'"\$ "
+setopt prompt_subst
+PROMPT='%n@%m %{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}'$'\n''\$ '
 
 # path
 export PATH="$HOME/bin:$PATH"
