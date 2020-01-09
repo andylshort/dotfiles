@@ -46,7 +46,7 @@ function print_git_repo() {
     else
         if [[ $(git status --porcelain) == "" ]]
         then
-            echo "%{$fg[green]%}($(git_branch_name)"
+            echo "%{$fg[green]%}($(git_branch_name))"
         else
             echo "%{$fg[red]%}($(git_branch_name))*"
         fi
