@@ -47,17 +47,16 @@ function print_git_repo() {
     else
         if [[ $(git status --porcelain) == "" ]]
         then
-            echo "%F{green}($(git_branch_name)) "
+            echo "%F{green}┣ $(git_branch_name)%f"
         else
-            echo "%F{red}(*$(git_branch_name)) "
+            echo "%F{red}┣ $(git_branch_name)*%f"
         fi
     fi
 }
 
 # prompt
 setopt prompt_subst
-PROMPT='%(!.su.)%(?.%F{green}>.%F{red}>)%f '
-RPROMPT='%{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}%n@%m'
+PROMPT='%n@%m %F{cyan}%~%f $(print_git_repo)'$'\n''%(!.su.)%(?.%F{green}.%F{red})❯%f '
 
 # path
 export PATH="$HOME/bin:$PATH"
