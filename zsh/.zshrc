@@ -1,16 +1,8 @@
-autoload -U colors; colors
+autoload -U colors && colors
 
 # variables
 export VISUAL="vim"
 export EDITOR="vim"
-
-export GREP_OPTIONS="--color=auto"
-
-# Set CLICOLOR if you want Ansi Colors in iTerm2 
-export CLICOLOR=1
-
-# Set colors to match iTerm2 Terminal Colors
-export TERM=xterm-256color
 
 # history
 [ -z "$HISTFILE" ] && HISTFILE=$HOME/.zsh_history
@@ -33,6 +25,15 @@ alias g="git"
 alias ll="ls -la"
 alias rzsh="source ~/.zshrc"
 
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
+
+autoload -U compinit && compinit
+autoload -U bashcompinit && bashcompinit
+
 # functions
 function git_branch_name() {
     ref=$(git symbolic-ref HEAD 2>/dev/null) || return
@@ -46,23 +47,20 @@ function print_git_repo() {
     else
         if [[ $(git status --porcelain) == "" ]]
         then
-            echo "%{$fg[green]%}($(git_branch_name))"
+            echo "%F{green}($(git_branch_name)) "
         else
-            echo "%{$fg[red]%}($(git_branch_name))*"
+            echo "%F{red}(*$(git_branch_name)) "
         fi
     fi
 }
 
 # prompt
 setopt prompt_subst
-PROMPT='%n@%m %{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}'$'\n''\$ '
+PROMPT='%(!.su.)%(?.%F{green}>.%F{red}>)%f '
+RPROMPT='%{$fg[cyan]%}[%~] $(print_git_repo)%{$reset_color%}%n@%m'
 
 # path
 export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
 
-# iterm integrations
-if [ "$(uname 2> /dev/null)" = "Darwin" ]; then
-    test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-fi
+[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
