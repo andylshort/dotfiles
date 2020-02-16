@@ -8,3 +8,5 @@
 	st = status
 [commit]
 	gpgsign = true
+[credential]
+	helper = store
