@@ -10,3 +10,5 @@
 	gpgsign = true
 [credential]
 	helper = store
+[core]
+	pager = less
