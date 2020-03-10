@@ -2,7 +2,7 @@
 import argparse
 import csv
 import fileinput
-from sys import exit
+import sys
 
 def create_parser():
     parser = argparse.ArgumentParser(description="Filters rows from csv")
@@ -15,13 +15,18 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
+    transposed = None
     headers = args.headers
-    transposed = list(zip(*csv.reader(open(args.file, "r"))))
+    if args.file is None:
+        file = sys.stdin.read().splitlines()
+        transposed = list(zip(*csv.reader(file)))
+    else:
+        transposed = list(zip(*csv.reader(open(args.file, "r"))))
 
     # check new headers aresame length as transposed output
     if headers is not None and len(headers) != len(transposed[0]):
         print("Need to specify as many headers as there will be transposed columns")
-        exit(1)
+        sys.exit(1)
 
     if args.out_file is None:
         if headers is not None:
