@@ -1,3 +1,5 @@
-#xrdb ~/.Xresources
-export SHELL=/usr/bin/zsh
-[ -z "$ZSH_VERSION"] && exec /usr/bin/zsh -l
+[[ -r "$HOME/.bashrc.pre" ]] && source "$HOME/.bashrc.pre"
+
+alias g="git"
+
+[[ -r "$HOME/.bashrc.local" ]] && source "$HOME/.bashrc.local"
