@@ -1,4 +1,4 @@
-[ -f "$HOME/.zshrc.pre" ] && source "$HOME/.zshrc.pre"
+[[ -r "$HOME/.zshrc.pre" ]] && source "$HOME/.zshrc.pre"
 
 autoload -U colors && colors
 
@@ -7,24 +7,27 @@ export VISUAL="vim"
 export EDITOR="$VISUAL"
 
 # history
-[ -z "$HISTFILE" ] && HISTFILE=$HOME/.zsh_history
-HISTSIZE=100000
-SAVEHIST=100000
+[[ -z "$HISTFILE" ]] && HISTFILE=$HOME/.zsh_history
+HISTSIZE=10000000
+SAVEHIST=10000000
 setopt extended_history
 setopt hist_expire_dups_first
 setopt hist_ignore_dups
+setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_verify
+setopt hist_reduce_blanks
 setopt inc_append_history
 setopt share_history
 
-setopt extended_glob
+# setopt extended_glob
 
 # alias
 alias ls="ls -G"
 alias ..="cd .."
 alias ...="cd ..; cd .."
 alias ezsh="$EDITOR ~/.zshrc && source ~/.zshrc"
+alias rzsh="source ~/.zshrc"
 alias g="git"
 alias ll="ls -la"
 alias mkdir="mkdir -p"
@@ -32,18 +35,21 @@ alias mkdir="mkdir -p"
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
+bindkey "$key[Up]" history-beginning-search-backward-end
+bindkey "$key[Down]" history-beginning-search-forward-end
 
 autoload -U compinit && compinit
 autoload -U bashcompinit && bashcompinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+
+bindkey -M menuselect '\e' send-break
 
 # keybindings
 bindkey '^[[H' beginning-of-line
 bindkey '^[[E' end-of-line
 bindkey '^[[1;5D' backward-word
 bindkey '^[[1;5C' forward-word
-
-bindkey "^[[A" history-beginning-search-backward-end
-bindkey "^[[B" history-beginning-search-forward-end
 
 # functions
 function git_branch_name() {
@@ -65,8 +71,12 @@ function print_git_repo() {
     fi
 }
 
-function mkd {
-    mkdir -p "$@" && cd "$_";
+function mcd() {
+    mkdir -p -- "$@" && cd -- "$_";
+}
+
+function env() {
+    command env $@ | sort;
 }
 
 function change_filetype_for_all {
@@ -88,6 +98,6 @@ export PATH="$HOME/bin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 
 # local .zshrc config (machine-specific)
-[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+[[ -r "$HOME/.zshrc.local" ]] && source "$HOME/.zshrc.local"
 
 # vi: ft=sh
