@@ -13,4 +13,4 @@
 [core]
 	pager = less
 [gpg]
-	program = /usr/local/bin/gpg
+	program = gpg2
