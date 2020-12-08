@@ -6,7 +6,7 @@
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
 
-    "git.autofetch": true,
+    "git.autofetch": false,
     "git.enableCommitSigning": true,
 
     // Colours
@@ -18,7 +18,8 @@
     // File type-specific
     "files.associations": {
         ".aliases": "shellscript",
-        ".functions": "shellscript"
+        ".functions": "shellscript",
+        "*.bc": "llvm"
     },
     "[latex]": {
         "editor.formatOnPaste": false,
@@ -81,7 +82,7 @@
         }
     ],
 
-    "python.pythonPath": "python3.7",
+    "python.pythonPath": "/usr/local/bin/python3",
 
     "spellright.spellContextByClass": {
         "latex": "body"
@@ -104,5 +105,9 @@
     "editor.minimap.enabled": false,
     "latex-workshop.message.update.show": false,
     "editor.fontSize": 14,
-    "workbench.startupEditor": "newUntitledFile"
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.maxTokenizationLineLength": 100000,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "explorer.autoReveal": "focusNoScroll"
 }
