@@ -24,7 +24,7 @@ ln -sfv $HOME/.dotfiles/git/.gitconfig $HOME/.gitconfig
 ln -sfv $HOME/.dotfiles/gdb/.gdbinit $HOME/.gdbinit
 
 
-if [[ "uname" == "Darwin" ]]
+if [[ `uname` == "Darwin" ]]
 then
     # load macOS-specific configuration
 
@@ -32,7 +32,7 @@ then
     ln -sfv $HOME/.dotfiles/vscode/settings.json $HOME/Library/Application\ Support/Code/User
     ln -sfv $HOME/.dotfiles/vscode/keybindings.json $HOME/Library/Application\ Support/Code/User
     ln -sfv $HOME/.dotfiles/vscode/snippets $HOME/Library/Application\ Support/Code/User
-elif [[ "uname" == "Linux" ]]
+elif [[ `uname` == "Linux" ]]
 then
     # load linux-specific configuration
 
