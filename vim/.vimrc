@@ -3,6 +3,8 @@ set nocompatible
 
 set noswapfile
 
+set hidden
+
  " File encoding
 set enc=utf-8
 set fenc=utf-8
@@ -13,13 +15,16 @@ filetype plugin indent on
 syntax enable
 
 " Display
-set number relativenumber
+set number
 set t_Co=256
+set background=dark
 set laststatus=2
 
 set list
 set listchars=tab:»·,space:·,eol:$,trail:◦,extends:▶,precedes:◀
 highlight SpecialKey ctermfg=8 guifg=DimGrey
+
+highlight StatusLineNC cterm=bold ctermfg=white ctermbg=darkgray
 
 " Indentation
 set tabstop=4
@@ -29,6 +34,10 @@ set expandtab
 set autoindent
 set smartindent
 set cindent
+
+" Folding
+set foldmethod=syntax
+set foldlevelstart=20
 
 " Search
 set hlsearch " highlight all items matching search
