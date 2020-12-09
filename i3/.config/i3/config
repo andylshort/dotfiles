@@ -180,8 +180,9 @@ mode "$mode_system" {
 bindsym $mod+Escape mode "$mode_system"
 
 # auto start
-exec_always --no-startup-id xrdb  ~/.Xresources
+exec_always --no-startup-id xrdb ~/.Xresources
 exec --no-startup-id compton --config ~/.config/compton.conf -b &> /tmp/compton.log
+exec --no-startup-id feh --bg-fill ~/.config/i3/wallpaper.jpg
 exec --no-startup-id i3-msg 'workspace 1:web; exec /usr/bin/firefox'
 
 # class                 border  bground text    indicator child_border
