@@ -1,51 +1,44 @@
 #!/bin/bash
-# only do what you know to do, don't be too smart
-
-# zsh
-ln -sfv $HOME/.dotfiles/zsh/.hushlogin $HOME/.hushlogin
-ln -sfv $HOME/.dotfiles/zsh/.zshrc $HOME/.zshrc
-
 # bash
-ln -sfv $HOME/.dotfiles/bash/.bashrc $HOME/.bashrc
-ln -sfv $HOME/.dotfiles/bash/.bash_profile $HOME/.bash_profile
-ln -sfv $HOME/.dotfiles/bash/.profile $HOME/.profile
+ln -sfv $HOME/.dotfiles/.hushlogin $HOME/.hushlogin
+ln -sfv $HOME/.dotfiles/.bashrc $HOME/.bashrc
+ln -sfv $HOME/.dotfiles/.bash_profile $HOME/.bash_profile
+ln -sfv $HOME/.dotfiles/.inputrc $HOME/.inputrc
 
 # scripts and tools
 ln -sfv $HOME/.dotfiles/bin $HOME/bin
 
 # vim
-ln -sfv $HOME/.dotfiles/vim/.vim $HOME/.vim
-ln -sfv $HOME/.dotfiles/vim/.vimrc $HOME/.vimrc
+ln -sfv $HOME/.dotfiles/.vim $HOME/.vim
+ln -sfv $HOME/.dotfiles/.vimrc $HOME/.vimrc
 
 # git
-ln -sfv $HOME/.dotfiles/git/.gitconfig $HOME/.gitconfig
+ln -sfv $HOME/.dotfiles/.gitconfig $HOME/.gitconfig
 
-#gdb
-ln -sfv $HOME/.dotfiles/gdb/.gdbinit $HOME/.gdbinit
-
+# gdb
+ln -sfv $HOME/.dotfiles/.gdbinit $HOME/.gdbinit
 
 if [[ `uname` == "Darwin" ]]
+# load macOS-specific configuration
 then
-    # load macOS-specific configuration
-
     # vscode
     ln -sfv $HOME/.dotfiles/vscode/settings.json $HOME/Library/Application\ Support/Code/User
     ln -sfv $HOME/.dotfiles/vscode/keybindings.json $HOME/Library/Application\ Support/Code/User
     ln -sfv $HOME/.dotfiles/vscode/snippets $HOME/Library/Application\ Support/Code/User
 elif [[ `uname` == "Linux" ]]
+# load linux-specific configuration
 then
-    # load linux-specific configuration
-
     # X
-    ln -sfv $HOME/.dotfiles/x/.Xdefaults $HOME/.Xdefaults
-    ln -sfv $HOME/.dotfiles/x/.Xresources $HOME/.Xresources
+    ln -sfv $HOME/.dotfiles/.Xdefaults $HOME/.Xdefaults
+    ln -sfv $HOME/.dotfiles/.Xresources $HOME/.Xresources
 
-    # i3 and rofi
+    # i3
     ln -sfv $HOME/.dotfiles/.config/i3 $HOME/.config/i3
+    # rofi
     ln -sfv $HOME/.dotfiles/.config/rofi $HOME/.config/rofi
 
     # tmux
-    ln -sfv $HOME/.dotfiles/tmux/.tmux.conf $HOME/.tmux.conf
+    ln -sfv $HOME/.dotfiles/.tmux.conf $HOME/.tmux.conf
 
     # mimeapps
     ln -sfv $HOME/.dotfiles/.config/mimeapps.list $HOME/.config/mimeapps.list

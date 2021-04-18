@@ -19,7 +19,11 @@
     "files.associations": {
         ".aliases": "shellscript",
         ".functions": "shellscript",
-        "*.bc": "llvm"
+        "*.bc": "llvm",
+        ".bashrc.local": "shellscript",
+        ".zshrc.local": "shellscript",
+        ".bashrc.pre": "shellscript",
+        ".inputrc": "shellscript"
     },
     "[latex]": {
         "editor.formatOnPaste": false,
@@ -35,7 +39,10 @@
     "[markdown]": {
         "editor.wordWrap": "on",
         "editor.quickSuggestions": false,
-        "editor.fontSize": 16
+        "editor.fontSize": 16,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": false
     },
 
     "latex-workshop.latex.autoBuild.run": "never",
@@ -96,7 +103,6 @@
     "spellright.groupDictionaries": false,
 
     "terminal.integrated.shell.linux": "/bin/zsh",
-    "window.zoomLevel": 0,
     "terminal.integrated.lineHeight": 1.1,
     "terminal.integrated.fontSize": 13,
     "extensions.ignoreRecommendations": true,
@@ -109,5 +115,25 @@
     "editor.maxTokenizationLineLength": 100000,
     "telemetry.enableTelemetry": false,
     "telemetry.enableCrashReporter": false,
-    "explorer.autoReveal": "focusNoScroll"
+    "explorer.autoReveal": "focusNoScroll",
+    "markdown.extension.list.indentationSize": "inherit",
+    "python.showStartPage": false,
+    "todo-tree.tree.showScanModeButton": false,
+    "editor.largeFileOptimizations": false,
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "[ ]",
+        "[x]"
+    ],
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ]
 }
