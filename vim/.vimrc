@@ -42,16 +42,20 @@ set foldlevelstart=20
 " Search
 set hlsearch " highlight all items matching search
 set incsearch " highlight matches as search term is typed
+" C-l extended to disable search highlight when finished
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 
 " Other
 set mouse=a
+" remove extraneous ".netrwhist" file
+autocmd VimLeave * if filereadable("$HOME/.vim/.netrwhist") | call delete("$HOME/.vim/.netrwhist") | endif
 
 " Filetype-specifc
 if has("autocmd")
 
     augroup cpp
         autocmd!
-        autocmd BufEnter *.hpp :setlocal filetype=cpp
+        autocmd BufEnter *.hpp setfiletype cpp
     augroup END
 
     augroup makefile
@@ -68,6 +72,6 @@ if has("autocmd")
 
     augroup rasi
         autocmd!
-        autocmd BufNewFile,BufRead /*.rasi setf css
+        autocmd BufNewFile,BufRead /*.rasi setfiletype css
     augroup END
 endif

@@ -5,6 +5,8 @@
 export VISUAL="vim"
 export EDITOR="vim"
 
+export MODULEPATH=$MODULEPATH:"$HOME/modules/"
+
 # Remote connection-specific settings
 if [ -n "$SSH_TTY" ] || [ -n "$SSH_CONNECTION"] || [ -n "$SSH_CLIENT" ]; then
   # Set the GPG input to the terminal, rather than open the GUI program
@@ -19,23 +21,24 @@ export LANGUAGE=en_GB.UTF-8
 
 # History settings
 [[ -z "$HISTFILE" ]] && HISTFILE=$HOME/.bash_history
-HISTTIMEFORMAT="%F %T "
+export HISTTIMEFORMAT="%F %T "
 # Save 10000 history lines in memory
-HISTSIZE=10000
+export HISTSIZE=10000
 # SAve 200M lines on disk
-HISTFILESIZE=200000000
+export HISTFILESIZE=200000000
 # Append to the history, instead of overwriting
 shopt -s histappend
 # Ignore duplicates or space-preceding commands
-HISTCONTROL=ignoreboth
+export HISTCONTROL=ignoreboth:erasedups
 # Ignore useless commands
-HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
+export HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 # Multiple commands on one line show up as a single line
 shopt -s cmdhist
 
 # Aliases
 alias ..="cd ..;"
 alias g="git"
+alias m="module"
 alias mkdir="mkdir -p"
 alias rsh="source $HOME/.bashrc"
 
@@ -61,6 +64,10 @@ function parse_git_branch() {
 function write_prompt() {
   local EXIT=$?
   PS1=""
+
+  history -a
+  history -c
+  history -r
 
   # Start printing prompt on newline if cursor not in first column
   shopt -s promptvars
@@ -101,3 +108,5 @@ PROMPT_COMMAND=write_prompt
 [[ -r "$HOME/.bashrc.local" ]] && source "$HOME/.bashrc.local"
 
 # vi:ft=sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

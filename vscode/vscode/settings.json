@@ -110,7 +110,7 @@
     "workbench.activityBar.visible": true,
     "editor.minimap.enabled": false,
     "latex-workshop.message.update.show": false,
-    "editor.fontSize": 14,
+    "editor.fontSize": 16,
     "workbench.startupEditor": "newUntitledFile",
     "editor.maxTokenizationLineLength": 100000,
     "telemetry.enableTelemetry": false,
@@ -130,10 +130,11 @@
         "[x]"
     ],
     "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ]
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb",
+        "*.pdf": "latex-workshop-pdf-hook"
+    },
+    "json.maxItemsComputed": 100000000,
+    "window.zoomLevel": -1,
+    "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace"
 }
