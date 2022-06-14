@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+import argparse
+import csv
+import fileinput
+import sys
+
+def create_parser():
+    parser = argparse.ArgumentParser(description="Filters rows from csv")
+    parser.add_argument("-f", "--file", type=str, help="Path to csv file to filter (if not specified, reads from stdin")
+    parser.add_argument("-o", "--out_file", type=str, help="Path to write transposed csv to (if not specified, prints to stdout)")
+    parser.add_argument("--headers", type=str, nargs="+", help="Headers for the new transposed csv")
+    return parser
+
+def main():
+    parser = create_parser()
+    args = parser.parse_args()
+
+    transposed = None
+    headers = args.headers
+    if args.file is None:
+        file = sys.stdin.read().splitlines()
+        transposed = list(zip(*csv.reader(file)))
+    else:
+        transposed = list(zip(*csv.reader(open(args.file, "r"))))
+
+    # check new headers aresame length as transposed output
+    if headers is not None and len(headers) != len(transposed[0]):
+        print("Need to specify as many headers as there will be transposed columns")
+        sys.exit(1)
+
+    if args.out_file is None:
+        if headers is not None:
+            print(",".join(headers))
+        for t in transposed:
+            print(",".join(t))
+    else:
+        with open(args.out_file, "w") as f:
+            writer = csv.writer(f)
+            writer.writerow(headers)
+            for line in transposed:
+                writer.writerow(line)
+
+if __name__ == "__main__":
+    main()

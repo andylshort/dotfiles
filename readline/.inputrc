@@ -1,0 +1,11 @@
+# Show all matching filenames for tab-completion
+set show-all-if-ambiguous on
+
+# Ignore case for tab auto-completion
+set completion-ignore-case on
+
+# Filtered history search
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# vi: ft=sh

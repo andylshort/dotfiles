@@ -1,0 +1,140 @@
+{
+    // Settings
+    "editor.renderWhitespace": "boundary",
+    "editor.rulers": [80, 120],
+
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+
+    "git.autofetch": false,
+    "git.enableCommitSigning": true,
+
+    // Colours
+    "workbench.colorTheme": "Dracula",    
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#f78bab"
+    },
+
+    // File type-specific
+    "files.associations": {
+        ".aliases": "shellscript",
+        ".functions": "shellscript",
+        "*.bc": "llvm",
+        ".bashrc.local": "shellscript",
+        ".zshrc.local": "shellscript",
+        ".bashrc.pre": "shellscript",
+        ".inputrc": "shellscript"
+    },
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.wordWrap": "on"
+    },
+    "[python]": {
+        "editor.autoIndent": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4
+    },
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": false,
+        "editor.fontSize": 16,
+        "editor.tabSize": 4,
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": false
+    },
+
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.view.pdf.viewer": "external",
+    "latex-workshop.latex.recipes":[
+        {
+            "name": "latexmk 🔃",
+            "tools": [
+                "latexmk"
+            ]
+        },
+        {
+            "name": "latexmk (latexmkrc)",
+            "tools": [
+                "latexmk_rconly"
+            ]
+        },
+        {
+            "name": "latexmk (lualatex)",
+            "tools": [
+                "lualatexmk"
+            ]
+        },
+        {
+            "name": "pdflatex ➞ bibtex ➞ pdflatex × 2",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "tools": [
+                "bibtex"
+            ]
+        }
+    ],
+
+    "python.pythonPath": "/usr/local/bin/python3",
+
+    "spellright.spellContextByClass": {
+        "latex": "body"
+    },
+    "spellright.ignoreFiles": [
+        "**/.gitignore",
+        "**/.spellignore",
+        "**/*.dump",
+        "**/*.out"
+    ],
+    "spellright.groupDictionaries": false,
+
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "terminal.integrated.lineHeight": 1.1,
+    "terminal.integrated.fontSize": 13,
+    "extensions.ignoreRecommendations": true,
+    "extensions.showRecommendationsOnlyOnDemand": true,
+    "workbench.activityBar.visible": true,
+    "editor.minimap.enabled": false,
+    "latex-workshop.message.update.show": false,
+    "editor.fontSize": 15,
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.maxTokenizationLineLength": 100000,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "explorer.autoReveal": "focusNoScroll",
+    "markdown.extension.list.indentationSize": "inherit",
+    "python.showStartPage": false,
+    "todo-tree.tree.showScanModeButton": false,
+    "editor.largeFileOptimizations": false,
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "[ ]",
+        "[x]"
+    ],
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.showFoldingControls": "always",
+    "editor.fontFamily": "'JetBrains Mono', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+    "editor.fontLigatures": true,
+}
