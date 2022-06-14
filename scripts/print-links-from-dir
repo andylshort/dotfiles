@@ -1,0 +1,9 @@
+#!/bin/zsh
+find -type l | while IFS= read -r lnk
+do
+  if readlink "$lnk" | grep -q '^/home/als/.dotfiles'
+  then
+    echo "$lnk"
+  fi
+done
+# vi:ft=sh

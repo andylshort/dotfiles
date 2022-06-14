@@ -4,8 +4,6 @@
 	signingkey = B886A5FD3953FED5
 [color]
 	ui = true
-[alias]
-	st = status
 [commit]
 	gpgsign = true
 [credential]
