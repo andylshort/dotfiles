@@ -6,7 +6,7 @@ set $alt Mod1
 # Remove window titles
 for_window [class="^.*"] border pixel 2
 for_window [class="Firefox.*" window_role="Organizer"] floating enable
-floating_maximum_size 640 x 480
+floating_maximum_size 1000 x 800
 
 # Font for window titles
 font pango:DejaVu Sans Mono 10

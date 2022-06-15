@@ -11,4 +11,4 @@
 [core]
 	pager = less
 [gpg]
-	program = gpg2
+	program = gpg

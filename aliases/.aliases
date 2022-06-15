@@ -1,12 +1,26 @@
+alias ..='cd ..;'
+
 env() { command env "$@" | sort }
 
 alias g='git'
-alias ga='git add'
-alias gc='git commit'
+alias ga="git ls-files -m -o --exclude-standard | fzf --print0 -m | xargs -0 -t -o git add"
+alias gd="git ls-files -m -o --exclude-standard | fzf --print0 -m | xargs -0 -t -o git diff --patch-with-stat"
+#alias ga='git add'
+#alias gc='git commit'
 alias gd='git diff'
-alias gp='git pull'
+alias gl='git pull'
+alias gp='git push'
+alias gs='git status'
 
+alias grep='grep --color=auto'
 alias ls='ls --color=auto'
+
+alias mkdir='mkdir -p'
+
+alias rzsh='source $HOME/.zshrc'
+
+alias sc='systemctl'
+alias scu='systemctl --user'
 
 alias vim='nvim'
 

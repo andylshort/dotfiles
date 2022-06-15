@@ -3,8 +3,21 @@ Xft.antialias: true
 Xft.hinting:   true
 Xft.rgba:      rgb
 Xft.autohint:  false
-Xft.hintstyle: hintslight
+Xft.hintstyle: hintfull
 Xft.lcdfilter: lcddefault
+
+
+xterm*loginshell: true
+xterm*scrollTtyOutput: false
+xterm*scrollTtyKeypress: true
+xterm*scrollKey: true
+xterm*savelines: 100000
+
+XTerm*VT100*scrollTtyOutput: false
+XTerm.vt100.saveLines: 100000
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
 
 XTerm*background:        #222D31
 XTerm*foreground:        #d8d8d8
@@ -13,6 +26,9 @@ XTerm*faceName:          Fixed
 XTerm*faceSize:          11
 XTerm*reverseVideo:      on
 XTerm*selectToClipboard: true
+xterm*VT100.Translations: #override \
+                 Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
+                 Ctrl Shift <Key>C:    copy-selection(CLIPBOARD)
 
 *background:                      #222D31
 *foreground:                      #d8d8d8

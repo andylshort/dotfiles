@@ -1,8 +1,31 @@
 [Default Applications]
+# Images
+image/bmp=eog.desktop;gimp.desktop;
+image/gif=eog.desktop;gimp.desktop;
+image/jpeg=eog.desktop;viewnior.desktop;gpicview.desktop;gimp.desktop;
+image/jpg=eog.desktop;viewnior.desktop;gpicview.desktop;gimp.desktop;
+image/pjpeg=eog.desktop;viewnior.desktop;gpicview.desktop;gimp.desktop;
+image/png=eog.desktop;viewnior.desktop;gpicview.desktop;gimp.desktop;
+image/svg+xml-compressed=eog.desktop
+image/svg+xml=eog.desktop
+image/tiff=eog.desktop
+image/x-bmp=eog.desktop
+image/x-gray=eog.desktop
+image/x-icb=eog.desktop
+image/x-ico=eog.desktop
+image/x-png=eog.desktop
+image/x-portable-anymap=eog.desktop
+image/x-portable-bitmap=eog.desktop
+image/x-portable-graymap=eog.desktop
+image/x-portable-pixmap=eog.desktop
+
+# Web
+x-scheme-handler/about=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/ftp=firefox.desktop
 x-scheme-handler/chrome=firefox.desktop
+x-scheme-handler/unknown=firefox.desktop
 text/html=firefox.desktop
 application/x-extension-htm=firefox.desktop
 application/x-extension-html=firefox.desktop
@@ -10,9 +33,7 @@ application/x-extension-shtml=firefox.desktop
 application/xhtml+xml=firefox.desktop
 application/x-extension-xhtml=firefox.desktop
 application/x-extension-xht=firefox.desktop
-image/jpeg=viewnior.desktop;gpicview.desktop;
-image/png=viewnior.desktop;gpicview.desktop;
-text/plain=mousepad.desktop
+
 x-scheme-handler/mailto=userapp-Thunderbird-TSKEN1.desktop
 message/rfc822=userapp-Thunderbird-TSKEN1.desktop
 application/pdf=epdfview.desktop
@@ -23,25 +44,18 @@ text/calendar=userapp-Thunderbird-S9HEN1.desktop
 application/x-extension-ics=userapp-Thunderbird-S9HEN1.desktop
 x-scheme-handler/webcals=userapp-Thunderbird-S9HEN1.desktop
 
+# Textual
+text/plain=vim.desktop;mousepad.desktop
+application/x-shellscript=vim.desktop
+text/english=vim.desktop
+text/x-makefile=vim.desktop
+
 [Added Associations]
-x-scheme-handler/http=userapp-Pale Moon.desktop;firefox.desktop;
-x-scheme-handler/https=userapp-Pale Moon.desktop;firefox.desktop;
-x-scheme-handler/ftp=userapp-Pale Moon.desktop;firefox.desktop;
-x-scheme-handler/chrome=userapp-Pale Moon.desktop;firefox.desktop;
-text/html=userapp-Pale Moon.desktop;firefox.desktop;
-application/x-extension-htm=userapp-Pale Moon.desktop;firefox.desktop;
-application/x-extension-html=userapp-Pale Moon.desktop;firefox.desktop;
-application/x-extension-shtml=userapp-Pale Moon.desktop;firefox.desktop;
-application/xhtml+xml=userapp-Pale Moon.desktop;firefox.desktop;
-application/x-extension-xhtml=userapp-Pale Moon.desktop;firefox.desktop;
-application/x-extension-xht=userapp-Pale Moon.desktop;firefox.desktop;
-image/jpeg=viewnior.desktop;gpicview.desktop;
-image/png=viewnior.desktop;gpicview.desktop;
-text/plain=mousepad.desktop;
-x-scheme-handler/mailto=userapp-Thunderbird.desktop;userapp-Thunderbird-TSKEN1.desktop;
-message/rfc822=userapp-Thunderbird.desktop;
-application/pdf=epdfview.desktop;
-application/x-bittorrent=deluge.desktop;
-x-scheme-handler/mid=userapp-Thunderbird-TSKEN1.desktop;
-x-scheme-handler/webcal=userapp-Thunderbird-S9HEN1.desktop;
-x-scheme-handler/webcals=userapp-Thunderbird-S9HEN1.desktop;
+# evince for pdfs
+#application/pdf=evince.desktop
+
+#[Added Associations]
+application/pdf=okularApplication_pdf.desktop;
+application/zip=org.gnome.FileRoller.desktop;
+application/msword=libreoffice-writer.desktop;
+font/ttf=org.gnome.font-viewer.desktop;

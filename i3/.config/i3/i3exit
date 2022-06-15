@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 lock() {
-  i3lock -i ~/bin/lock.png
+  i3lock -i ~/.config/i3/wallpaper.png
 }
 case "$1" in
     lock)
