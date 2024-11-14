@@ -1,16 +1,11 @@
 [user]
 	name = Andrew Lamzed-Short
-	email = me@andyls.co.uk
-	signingkey = B886A5FD3953FED5
+	email = andrew.lamzedshort@canonical.com
 [color]
 	ui = true
 [alias]
 	st = status
-[commit]
-	gpgsign = true
-[credential]
-	helper = store
 [core]
 	pager = less
-[gpg]
-	program = gpg2
+[url "git+ssh://andyls@git.launchpad.net/"]
+	insteadof = lp:
