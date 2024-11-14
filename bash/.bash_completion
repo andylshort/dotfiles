@@ -1,0 +1,17 @@
+# ssh auto-completion based on entries in known_hosts
+if [[ -e $HOME/.ssh/known_hosts ]]; then
+    complete -o default -W "$(cat $HOME/.ssh/known_hosts | sed 's/[, ].*//' | sort | uniq | grep -v '[0-9]')" ssh scp stfp
+fi
+
+# fzf
+if [ -x "$(command -v fzf)" ]; then
+    # TODO: Check fzf version and switch accordingly
+    # eval "$(fzf --bash)" # For fzf >= 0.48.1
+    # Otherwise
+    source /usr/share/doc/fzf/examples/key-bindings.bash
+fi
+
+# git
+if [ -f ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi

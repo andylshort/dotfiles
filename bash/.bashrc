@@ -42,29 +42,12 @@ HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 shopt -s cmdhist
 
 # Display
+# ---
 # Resize after each command
 shopt -s checkwinsize
 
-# Aliases
-alias ..="cd ..;"
-alias g="git"
-alias mkdir="mkdir -p"
-
-# Functions
-function mcd() {
-    mkdir -p -- "$@" && cd -- "$_";
-}
-
-function env() {
-    command env $@ | sort;
-}
-
-# SSH auto-completion based on entries in known_hosts.
-if [[ -e $HOME/.ssh/known_hosts ]]; then
-    complete -o default -W "$(cat $HOME/.ssh/known_hosts | sed 's/[, ].*//' | sort | uniq | grep -v '[0-9]')" ssh scp stfp
-fi
-
 # Prompt
+# ---
 function parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
@@ -150,22 +133,17 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# ===
 # Auto-completion
-# ===
+# ---
+# Built-in
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
+# Custom
+if [ -f ~/.bash_completion ]; then
+    . ~/.bash_completion
+fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-# Fuzzy finder (fzf)
-if [ -x "$(command -v fzf)" ]; then
-    # eval "$(fzf --bash)" # For fzf >= 0.48.1
-    # Otherwise
-    source /usr/share/doc/fzf/examples/key-bindings.bash
-fi
 
 # Load local (per computer) bashrc settings if available
 [[ -r "$HOME/.bashrc.local" ]] && source "$HOME/.bashrc.local"

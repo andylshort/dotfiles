@@ -22,5 +22,14 @@ alias ..="cd ..;"
 alias g="git"
 alias gpl="git pull --recurse-submodules"
 
+# Convenience functions
+function mcd() {
+    mkdir -p -- "$@" && cd -- "$_";
+}
+
+function env() {
+    command env $@ | sort;
+}
+
 # Reload bash configuration file to apply changes
-alias rebash='source $HOME/.bashrc'
+alias rebash='exec bash'
