@@ -1,0 +1,2 @@
+" gitcommit.vim
+set nosmartindent

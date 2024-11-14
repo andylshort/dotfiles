@@ -1,3 +1,11 @@
+# macOS
 .DS_Store
+
+# Device-specific changes
 *.local
 *.pre
+
+# vim: Don't commit plugins
+vim/.vim/autoload
+vim/.vim/plugged
+vim/.vim/.netwrhst
