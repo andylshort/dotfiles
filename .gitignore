@@ -5,7 +5,7 @@
 *.local
 *.pre
 
-# vim: Don't commit plugins
+# vim - Do not commit plugins
 vim/.vim/autoload
 vim/.vim/plugged
-vim/.vim/.netwrhst
+vim/.vim/.netrwhist
