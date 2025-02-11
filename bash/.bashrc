@@ -4,8 +4,24 @@ case $- in
     *) return;;
 esac
 
+# +--------------------------+
+# | Table of Contents        |
+# +--------------------------+
+# | 1. Environment variables |
+# | 2. History               |
+# | 3. Display               |
+# | 4. Functions             |
+# | 5. Aliases               |
+# | 6. Prompt                |
+# | 7. Auto-completion       |
+# +--------------------------+
+
 # Code that needs to run before the main bash setup
 [[ -r "$HOME/.bashrc.pre" ]] && source "$HOME/.bashrc.pre"
+
+# +-----------------------+
+# | Environment Variables |
+# +-----------------------+
 
 # Set up the environment
 export VISUAL="vim"
@@ -25,12 +41,15 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
-# History settings
+# +---------+
+# | History |
+# +---------+
+
 [[ -z "$HISTFILE" ]] && HISTFILE=$HOME/.bash_history
 HISTTIMEFORMAT="%F %T "
 # Save 10000 history lines in memory
 HISTSIZE=10000
-# SAve 200M lines on disk
+# Save 200M lines on disk
 HISTFILESIZE=200000000
 # Append to the history, instead of overwriting
 shopt -s histappend
@@ -41,13 +60,19 @@ HISTIGNORE='ls:ll:ls -alh:pwd:clear:history'
 # Multiple commands on one line show up as a single line
 shopt -s cmdhist
 
-# Display
-# ---
+
+# +---------+
+# | Display |
+# +---------+
+
 # Resize after each command
 shopt -s checkwinsize
 
-# Prompt
-# ---
+
+# +-----------+
+# | Functions |
+# +-----------+
+
 function parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
@@ -59,6 +84,53 @@ function set_virtualenv () {
         PYTHON_VIRTUALENV="(`basename \"$VIRTUAL_ENV\"`) "
     fi
 }
+
+function mcd() {
+    mkdir -p -- "$@" && cd -- "$_";
+}
+
+function env() {
+    command env $@ | sort;
+}
+
+# +---------+
+# | Aliases |
+# +---------+
+
+# Enable colour support of various commands if supported
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+fi
+
+# Directory traversal and management
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+alias tree='tree -C'
+
+alias mkdir="mkdir -p"
+
+alias ..="cd ..;"
+
+# Git
+alias g="git"
+alias gcm="git checkout master"
+alias gpl="git pull --recurse-submodules"
+alias grm="git rebase master"
+
+# Miscellaneous
+alias wiki="vim -c VimwikiIndex"
+
+# Reload bash configuration file to apply changes
+alias rebash='exec bash'
+
+
+# +--------+
+# | Prompt |
+# +--------+
 
 function write_prompt() {
     # TODO: Handle case where colors aren't available?
@@ -128,13 +200,11 @@ function write_prompt() {
 # Set the prompt via this command (runes once before each prompt is set)
 PROMPT_COMMAND=write_prompt
 
-# Aliases
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
 
-# Auto-completion
-# ---
+# +-----------------+
+# | Auto-completion |
+# +-----------------+
+
 # Built-in
 if [ -f /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
