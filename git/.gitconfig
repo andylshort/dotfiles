@@ -9,3 +9,5 @@
 	pager = less
 [url "git+ssh://andyls@git.launchpad.net/"]
 	insteadof = lp:
+[diff]
+	algorithm = histogram
