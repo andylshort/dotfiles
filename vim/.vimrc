@@ -16,6 +16,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -80,6 +81,6 @@ set incsearch " highlight matches when typing search
 set mouse=a
 
 " Vimwiki configuration
-let g:vimwiki_list = [{'path': '~/notes/', 'syntax': 'markdown', 'ext': 'md' }]
+let g:vimwiki_list = [{'path': '~/notes/work/', 'syntax': 'markdown', 'ext': 'md' }]
 " Do not treat all Markdown files as vimwiki files
 let g:vimwiki_global_ext = 0
