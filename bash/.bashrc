@@ -122,6 +122,11 @@ alias ..="cd ..;"
 
 # Git
 alias g="git"
+alias ga="git add"
+alias gap="git add -p"
+alias gc="git commit"
+alias gcm="git commit -m"
+alias gcl="git clone"
 alias gcm="git checkout master"
 alias gpl="git pull --recurse-submodules"
 alias grm="git rebase master"
