@@ -41,6 +41,11 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
+# Fuzzy finder (fzf)
+# Open up a preview window (hidden by default) using '?' to toggle it
+# Useful when searching for long commands in your command history
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:6:hidden:wrap --bind '?:toggle-preview'"
+
 # +---------+
 # | History |
 # +---------+
