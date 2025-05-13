@@ -131,9 +131,6 @@ alias gcm="git checkout master"
 alias gpl="git pull --recurse-submodules"
 alias grm="git rebase master"
 
-# Miscellaneous
-alias wiki="vim -c VimwikiIndex"
-
 # Reload bash configuration file to apply changes
 alias rebash='exec bash'
 
