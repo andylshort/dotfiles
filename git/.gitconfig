@@ -1,13 +1,30 @@
 [user]
 	name = Andrew Lamzed-Short
 	email = andrew.lamzedshort@canonical.com
+
 [color]
 	ui = true
+
 [alias]
-	st = status
+	cl = clone
+
+	a = add
+	ap = add -p
+
+	c = commit --verbose
+	cm = commit -m
+
+	d = diff
+
+	s = status
+
+	pl = pull --recurse-submodules
+
 [core]
 	pager = less
+
 [url "git+ssh://andyls@git.launchpad.net/"]
 	insteadof = lp:
+
 [diff]
 	algorithm = histogram
