@@ -42,6 +42,13 @@ set listchars=tab:▸\ ,eol:¬,trail:~,extends:>,precedes:<
 
 set scrolloff=8
 
+" Highlight line in insert mode
+augroup linea
+    autocmd!
+    autocmd InsertEnter * highlight CursorLine ctermbg=16
+    autocmd InsertLeave * highlight CursorLine ctermbg=none
+augroup END
+
 " Statusline customisations
 let g:airline_extensions = ['branch']
 let g:airline_theme='violet'
@@ -78,7 +85,13 @@ set incsearch " highlight matches when typing search
 " Mouse
 set mouse=a
 
-" Vimwiki configuration
-let g:vimwiki_list = [{'path': '~/notes/work/', 'syntax': 'markdown', 'ext': 'md' }]
-" Do not treat all Markdown files as vimwiki files
-let g:vimwiki_global_ext = 0
+" File type-specific choices
+" ===
+autocmd FileType gitconfig set noexpandtab
+autocmd FileType gitconfig set tabstop=4
+
+" Autoreload after modifying .vimrc.
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }
