@@ -20,6 +20,14 @@
 
 	pl = pull --recurse-submodules
 
+	p = push
+
+	rb = rebase
+
+	st = stash
+
+	lo = log --oneline
+
 [core]
 	pager = less
 
