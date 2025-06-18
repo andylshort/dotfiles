@@ -26,6 +26,7 @@ esac
 # Set up the environment
 export VISUAL="vim"
 export EDITOR="vim"
+export BROWSER="google-chrome"
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
@@ -122,9 +123,10 @@ alias ..="cd ..;"
 
 # Git
 alias g="git"
-alias gcl="git clone"
 alias gcm="git checkout master"
 alias grm="git rebase master"
+
+alias gpl="git pull --recurse-submodules"
 
 # Reload bash configuration file to apply changes
 alias rebash='exec bash'
