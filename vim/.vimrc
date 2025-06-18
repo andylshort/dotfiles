@@ -21,8 +21,6 @@ Plug 'tpope/vim-repeat'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'vimwiki/vimwiki'
-
 call plug#end()
 " 'filetype plugin indent on' and 'syntax enable' already called by above
 
