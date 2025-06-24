@@ -77,4 +77,6 @@ if has("autocmd")
         autocmd!
         autocmd BufNewFile,BufRead /*.rasi setfiletype css
     augroup END
+
+    autocmd FileType gitconfig setlocal noexpandtab
 endif
