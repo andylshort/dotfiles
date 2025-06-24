@@ -82,25 +82,43 @@ function write_prompt() {
     if [ $EXIT == 0 ]; then
       PS1+="\e[32m✔\e[90m \A\e[00m\n"
     else
-      PS1+="\e[31m✘\e[90m \A\e[00m\n"
+      PS1+="\e[1;31m✘ \e[2;31m(\e[0;31m$EXIT\e[2;31m)\e[90m \A\e[00m\n"
     fi
   fi
 
-  # Current user, host, path
-  PS1+="\u@\h \[\033[36m\]\w\[\033[00m\]\n"
+  PS1+="\e[90m────────────────\e[00m\n"
+
+  # Current user and host
+  if [[ $UID -eq 0 ]]
+  then
+    PS1+="\e[31m\u\e[00m"
+  else
+    PS1+="\e[34m\u\e[00m"
+  fi
+  # TODO: Change based on remote/ssh host or not
+  # [[ $SSH_TTY ]] && host="@$HOSTNAME "
+  PS1+="\e[1;30m@\e[00m"
+  PS1+="\h "
   
   # Append the current git branch if in a repo, on a new line
   if $(git status -s &> /dev/null)
   then
+    PS1+="\e[1;30m(\e[00m"
     if [[ $(git status --porcelain) == "" ]]
     then
-      PS1+="\e[32m⊻ $(parse_git_branch)\e[00m\n"
+      PS1+="\e[32m⊻ $(parse_git_branch)\e[00m"
     else
-      PS1+="\e[31m⊻ $(parse_git_branch)*\e[00m\n"
+      PS1+="\e[31m⊻ $(parse_git_branch)*\e[00m"
     fi
+    PS1+="\e[1;30m)\e[00m"
   fi
+  PS1+="\n"
 
-  PS1+="\$ "
+  # Separate line for path
+  PS1+="\[\033[36m\]\$PWD\[\033[00m\]\n"
+
+  # Little hacker symbol for command
+  PS1+="\e[32m>\e[00m "
 }
 
 # Set the prompt via this command (runes once before each prompt is set)
