@@ -1,0 +1,117 @@
+{
+    "editor.fontSize": 16,
+    "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+
+            
+    "workbench.colorCustomizations": {
+        "editorRuler.foreground": "#4d4d4d"
+    },
+
+    // Terminal settings to build thesis with
+    "terminal.integrated.lineHeight": 1.1,
+    "terminal.integrated.fontSize": 13,
+
+    // LaTeX-specific configuration
+    "files.associations": {
+        "*.sty": "latex",
+        "*.bc": "llvm"
+    },
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 80,
+        "editor.autoClosingBrackets": "always",
+        "editor.autoClosingQuotes": "always",
+        "editor.rulers": [80]
+    },
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.view.outline.commands": [],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdflatex -> bibtex -> pdflatex -> pdflatex",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+          "name": "latexmk",
+          "tools": [
+            "latexmk"
+          ]
+        },
+        {
+            "name": "pdflatex",
+            "tools": [
+                "pdflatex"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "--shell-escape",
+                "-pdf",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "--shell-escape",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ],
+            "env": {}
+        }
+    ],
+
+    // Spell checking
+    "spellright.spellContextByClass": {
+        "latex": "body"
+    },
+    "spellright.ignoreFiles": [
+        "**/.gitignore",
+        "**/.spellignore",
+        "**/*.dump",
+        "**/*.out",
+        "**/*.sty"
+    ],
+    "spellright.groupDictionaries": false,
+    "extensions.ignoreRecommendations": true,
+    "editor.minimap.enabled": false,
+    "breadcrumbs.enabled": false,
+    // "latex-workshop.view.pdf.color.dark.backgroundColor": "#333",
+    // "latex-workshop.view.pdf.color.dark.pageColorsBackground": "#222",
+    // "latex-workshop.view.pdf.color.dark.pageColorsForeground": "#efefef",
+    "git.confirmSync": false,
+    "window.zoomLevel": -1,
+    "ltex.additionalRules.motherTongue": "en-GB",
+    "ltex.checkFrequency": "save",
+    "ltex.language": "en-GB",
+    "ltex.statusBarItem": true,
+    "[html]": {
+        "editor.defaultFormatter": "mohd-akram.vscode-html-format"
+    },
+    "diffEditor.maxComputationTime": 0,
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|%|^|^[ \\t]*(-|\\d+.))\\s*($TAGS)"
+}

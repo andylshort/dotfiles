@@ -23,22 +23,28 @@
         ".bashrc.local": "shellscript",
         ".zshrc.local": "shellscript",
         ".bashrc.pre": "shellscript",
-        ".inputrc": "shellscript"
+        ".inputrc": "shellscript",
+        "*.sty": "latex"
     },
     "[latex]": {
         "editor.formatOnPaste": false,
         "editor.formatOnSave": false,
         "editor.suggestSelection": "recentlyUsedByPrefix",
-        "editor.wordWrap": "on"
+        "editor.wordWrap": "wordWrapColumn",
+        "editor.wordWrapColumn": 80
     },
     "[python]": {
-        "editor.autoIndent": true,
+        "editor.autoIndent": "full",
         "editor.insertSpaces": true,
         "editor.tabSize": 4
     },
     "[markdown]": {
         "editor.wordWrap": "on",
-        "editor.quickSuggestions": false,
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        },
         "editor.fontSize": 16,
         "editor.tabSize": 4,
         "editor.detectIndentation": false,
@@ -46,7 +52,6 @@
     },
 
     "latex-workshop.latex.autoBuild.run": "never",
-    "latex-workshop.view.pdf.viewer": "external",
     "latex-workshop.latex.recipes":[
         {
             "name": "latexmk 🔃",
@@ -106,15 +111,10 @@
     "terminal.integrated.lineHeight": 1.1,
     "terminal.integrated.fontSize": 13,
     "extensions.ignoreRecommendations": true,
-    "extensions.showRecommendationsOnlyOnDemand": true,
-    "workbench.activityBar.visible": true,
     "editor.minimap.enabled": false,
-    "latex-workshop.message.update.show": false,
     "editor.fontSize": 16,
     "workbench.startupEditor": "newUntitledFile",
     "editor.maxTokenizationLineLength": 100000,
-    "telemetry.enableTelemetry": false,
-    "telemetry.enableCrashReporter": false,
     "explorer.autoReveal": "focusNoScroll",
     "markdown.extension.list.indentationSize": "inherit",
     "python.showStartPage": false,
@@ -135,6 +135,23 @@
         "*.pdf": "latex-workshop-pdf-hook"
     },
     "json.maxItemsComputed": 100000000,
+    "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace",
+    "remote.SSH.connectTimeout": 30,
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "markdown.preview.openMarkdownLinks": "inEditor",
+    "workbench.editor.revealIfOpen": true,
+    "vscode-pets.theme": "beach",
+    "vscode-pets.throwBallWithMouse": true,
+    "telemetry.telemetryLevel": "off",
     "window.zoomLevel": -1,
-    "editor.fontFamily": "'JetBrains Mono', Menlo, Monaco, 'Courier New', monospace"
+    "cmake.showOptionsMovedNotification": false,
+    "fortran.fortls.path": "/Users/andy/Library/Python/3.11/bin/",
+    "fortran.formatting.path": "/Users/andy/Library/Python/3.11/bin/",
+    "git.confirmSync": false,
+    "fortran.notifications.releaseNotes": false,
+    "python.createEnvironment.trigger": "off",
+    "[javascript]": {
+        "editor.defaultFormatter": "numso.prettier-standard-vscode"
+    },
+    "python.analysis.typeCheckingMode": "basic"
 }
