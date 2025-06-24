@@ -23,3 +23,5 @@
 [pack]
 	window = 1
 	packSizeLimit = 3000000000
+[diff]
+	algorithm = patience
