@@ -2,6 +2,7 @@
 [[ -r "$HOME/.bashrc" ]]  && source "$HOME/.bashrc"
 
 export PATH="/usr/local/sbin:$PATH"
+export PATH=$PATH:"/Library/TeX/texbin/"
 
 # Setting PATH for Python 3.9
 # The original version is saved in .bash_profile.pysave
