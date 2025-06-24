@@ -15,12 +15,19 @@ alias gc="git commit"
 alias gp="git push"
 alias gs='git status'
 
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+
 # Remote connection-specific settings
 if [[ -n "$SSH_TTY" ]] || [[ -n "$SSH_CONNECTION" ]] || [[ -n "$SSH_CLIENT" ]]; then
   # Set the GPG input to the terminal, rather than open the GUI program
   export GPG_TTY=$(tty)
   export TERM=xterm-256color
 fi
+
+export PATH=$PATH:"/Library/TeX/texbin/"
+export PATH="/Users/andy/Library/Python/3.11/bin:$PATH"
 
 # Autocompletion
 autoload -Uz compinit
