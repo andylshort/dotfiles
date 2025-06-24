@@ -12,8 +12,14 @@
 	helper = store
 [core]
 	pager = less
+	compression = 0
 	excludesFile = ~/.gitignore
 [gpg]
 	program = gpg2
 [init]
 	defaultBranch = main
+[http]
+	postBuffer = 26214400
+[pack]
+	window = 1
+	packSizeLimit = 3000000000
