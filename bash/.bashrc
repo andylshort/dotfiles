@@ -19,6 +19,8 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
+export PATH=$PATH:"/Library/TeX/texbin/"
+
 # History settings
 [[ -z "$HISTFILE" ]] && HISTFILE=$HOME/.bash_history
 export HISTTIMEFORMAT="%F %T "
