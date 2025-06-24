@@ -12,6 +12,7 @@
 	helper = store
 [core]
 	pager = less
+	excludesFile = ~/.gitignore
 [gpg]
 	program = gpg2
 [init]
