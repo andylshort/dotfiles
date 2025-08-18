@@ -14,3 +14,9 @@ vim/.vim/autoload
 vim/.vim/plugged
 # * Nor the netrw history
 vim/.vim/.netrwhist
+
+# zsh
+# * Don't track history (for now, could change)
+.zsh_history
+# * Completion dump is auto-generated, no need to commit
+.zcompdump*
