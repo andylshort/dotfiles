@@ -2,10 +2,15 @@
 .DS_Store
 
 # Device-specific changes
+# * Ignore files with `*.local` and `*.pre` suffixes
 *.local
 *.pre
+# * Except directories called `.local`
+!**/.local
 
-# vim: Don't commit plugins
+# vim
+# * Don't commit plugins
 vim/.vim/autoload
 vim/.vim/plugged
-vim/.vim/.netwrhst
+# * Nor the netrw history
+vim/.vim/.netwrhist
