@@ -1,0 +1,6 @@
+alias ls="ls --color=auto"
+alias grep="grep --color=auto"
+
+alias gpl="git pull --recurse-submodules"
+
+# vi: ft=sh
