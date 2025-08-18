@@ -3,9 +3,18 @@
 
 # Device-specific changes
 *.local
+!.local
 *.pre
 
-# vim - Do not commit plugins
+# vim
+# * plugins
 vim/.vim/autoload
 vim/.vim/plugged
+# * netrw history
 vim/.vim/.netrwhist
+
+# zsh
+# * Commit history (for now)
+.zsh_history
+# * Auto-generated completion cache
+.zcompdump*
