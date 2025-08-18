@@ -1,5 +1,6 @@
 # Show all matching filenames for tab-completion
 set show-all-if-ambiguous on
+TAB:menu-complete
 
 # Ignore case for tab auto-completion
 set completion-ignore-case on

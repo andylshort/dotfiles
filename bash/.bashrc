@@ -131,6 +131,10 @@ alias gpl="git pull --recurse-submodules"
 # Reload bash configuration file to apply changes
 alias rebash='exec bash'
 
+# tmux
+alias ta="tmux attach-session -t $1"
+alias tn="tmux new-session -s $1"
+
 
 # +--------+
 # | Prompt |
@@ -186,18 +190,24 @@ function write_prompt() {
     set_virtualenv
 
     # Current user, host, path
-    PS1+="${BOLD_GREEN}\u@\h${RESET}:${BOLD_BLUE}\w${RESET}"
+    PS1+="${BOLD_GREEN}\u${RESET}@${GREEN}\h${RESET}"
 
     # Append the current git branch if in a repo, on a new line
     if $(git status -s &> /dev/null); then
         if [[ $(git status --porcelain) == "" ]]; then
-            PS1+=" ${GREEN}⊻ $(parse_git_branch)${RESET}"
+            PS1+=" ${GREEN}(⊻ $(parse_git_branch))${RESET}"
         else
-            PS1+=" ${MAGENTA}⊻ $(parse_git_branch)*${RESET}"
+            PS1+=" ${MAGENTA}(⊻ $(parse_git_branch)*)${RESET}"
         fi
     fi
+    PS1+="\n"
+    PS1+="${BOLD_BLUE}\$PWD${RESET}\n"
 
-    PS1+="\n${PYTHON_VIRTUALENV}\$ "
+    # Add virtualenv info
+    PS1+="${PYTHON_VIRTUALENV}"
+
+    # Add command indicator
+    PS1+="${GREEN}>${RESET} "
     unset colour_prompt
 }
 
