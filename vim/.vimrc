@@ -20,8 +20,6 @@ Plug 'tpope/vim-commentary'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-Plug 'vimwiki/vimwiki'
-
 call plug#end()
 " 'filetype plugin indent on' and 'syntax enable' already called by above
 
@@ -33,7 +31,10 @@ set fileformat=unix
 
 " Display
 set number
+set relativenumber
 set laststatus=2
+
+set nocursorcolumn
 
 set t_Co=256
 set background=dark
@@ -78,8 +79,3 @@ set incsearch " highlight matches when typing search
 
 " Mouse
 set mouse=a
-
-" Vimwiki configuration
-let g:vimwiki_list = [{'path': '~/notes/', 'syntax': 'markdown', 'ext': 'md' }]
-" Do not treat all Markdown files as vimwiki files
-let g:vimwiki_global_ext = 0
