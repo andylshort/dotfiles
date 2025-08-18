@@ -30,6 +30,7 @@
 
 [core]
 	pager = less
+	excludesFile = "~/.gitignore"
 
 [url "git+ssh://andyls@git.launchpad.net/"]
 	insteadof = lp:
