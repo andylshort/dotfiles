@@ -11,8 +11,11 @@ Dotfiles for:
 * git
 * i3
 * iterm2
+* nvim
+    * 
 * rofi
 * vim
+    * vim-plug: 
 * vs-code
 * xserver
 * zsh
