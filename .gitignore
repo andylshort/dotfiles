@@ -13,4 +13,4 @@
 vim/.vim/autoload
 vim/.vim/plugged
 # * Nor the netrw history
-vim/.vim/.netwrhist
+vim/.vim/.netrwhist
