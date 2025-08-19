@@ -10,8 +10,8 @@ export LANG="en_GB.UTF-8"
 export LC_NUMERIC="en_GB"
 
 
-export EDITOR="vim"
-export VISUAL="vim"
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 export BROWSER="firefox"
 
