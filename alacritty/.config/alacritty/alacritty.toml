@@ -6,11 +6,10 @@ import = ["~/.config/alacritty/dracula.toml"]
 TERM = "xterm-256color"
 
 [font]
-size = 10.0
+size = 12.0
 
 [font.normal]
-family = "monospace"
-style = "Regular"
+family = "Inconsolata"
 
 [scrolling]
 history = 100000
