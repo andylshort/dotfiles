@@ -8,6 +8,12 @@
 # * Except directories called `.local`
 !**/.local
 
+# tmux
+# * Ignore all plugins, as use tpm to download and install
+tmux/.config/tmux/plugins
+# * Except tpm, which we need, and is added as a submodule
+!tmux/.config/tmux/plugins/tpm
+
 # vim
 # * Don't commit plugins
 vim/.vim/autoload
