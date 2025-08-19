@@ -35,7 +35,11 @@ bindkey -e
 # * Ensure the following keys have their correct functionality
 #   * Home and end
 bindkey '^[[H' beginning-of-line
+bindkey '^[[7~' beginning-of-line
+bindkey '^[OH' beginning-of-line
 bindkey '^[[F' end-of-line
+bindkey '^[[8~' end-of-line
+bindkey '^[OF' end-of-line
 #   * Delete key
 bindkey '^[[3~' delete-char
 #   * Insert key
