@@ -10,7 +10,8 @@ fpath=($ZDOTDIR/zsh-completions/src $fpath)
 
 # Plugin configuration
 # * zsh-autosuggestions
-bindkey "^[[C" autosuggest-accept
+#   * Use Ctrl-Space for completion
+bindkey "^ " autosuggest-accept
 
 # History settings
 setopt HIST_SAVE_NO_DUPS
