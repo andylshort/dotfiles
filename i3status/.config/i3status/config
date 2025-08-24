@@ -32,6 +32,7 @@ ethernet _first_ {
 
 battery all {
         format = "%status %percentage %remaining"
+        format_percentage = "%.00f%s"
 }
 
 disk "/" {
@@ -43,11 +44,11 @@ load {
 }
 
 memory {
-        format = "%used | %available"
+        format = "%percentage_used used of %total"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "%Y/%m/%d %H:%M:%S"
 }
