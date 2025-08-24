@@ -10,10 +10,13 @@ export LANG="en_GB.UTF-8"
 export LC_NUMERIC="en_GB"
 
 
-export EDITOR="nvim"
-export VISUAL="nvim"
+export EDITOR="edit"
+export VISUAL="edit"
 
 export BROWSER="firefox"
+
+
+export PATH="$HOME/.local/bin:$PATH"
 
 
 # History

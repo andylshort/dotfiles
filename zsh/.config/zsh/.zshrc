@@ -45,6 +45,9 @@ bindkey '^[[3~' delete-char
 #   * Insert key
 bindkey '^[[2~' quoted-insert
 
+# Aliases
+source $ZDOTDIR/.zsh_aliases
+
 # Source control information
 autoload -Uz vcs_info
 zstyle ':vcs_info:git:*' formats 'on %b'

@@ -1,0 +1,3 @@
+alias edit="nvim"
+
+alias ll="ls -la"
