@@ -18,15 +18,15 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:Inconsolata 11
 
+# Mouse
+# * Stop window focus changing on mouse hover
+focus_follows_mouse no
+
 # Gaps
 # * ...around all windows
 gaps outer 0
 # * ...between windows
 gaps inner 8 
-
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -173,10 +173,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # Power control mode
-set $lock_program i3lock --color=21222C
+set $lock_program loginctl lock-session
 set $mode_system System: (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-        bindsym l exec --no-startup-id $lock_program lock, mode "default"
+        bindsym l exec --no-startup-id $lock_program, mode "default"
         bindsym e exec --no-startup-id i3-msg exit, mode "default"
         bindsym s exec --no-startup-id $lock_program && systemctl suspend, mode "default"
         bindsym h exec --no-startup-id $lock_program && systemctl hibernate, mode "default"
