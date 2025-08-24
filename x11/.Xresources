@@ -23,12 +23,6 @@ URxvt*scrollTtyKeypress: true
 xterm*faceName: Inconsolata\-g for Powerline
 xterm*faceSize: 10
 
-! keys
-URxvt.keysym.Control-Up:     \033[1;5A
-URxvt.keysym.Control-Down:   \033[1;5B
-URxvt.keysym.Control-Left:   \033[1;5D
-URxvt.keysym.Control-Right:  \033[1;5C
-
 ! Theme
 ! Dracula Xresources palette
 *.foreground: #F8F8F2
@@ -54,3 +48,24 @@ URxvt.keysym.Control-Right:  \033[1;5C
 xterm*VT100.Translations: #override \
                  Ctrl Shift <Key>V:    insert-selection(CLIPBOARD) \n\
                  Ctrl Shift <Key>C:    copy-selection(CLIPBOARD)
+
+
+URxvt*font:     xft:Source\ Code\ Pro:style=Regular:size=10,\
+                xft:Noto Color Emoji:size=10
+
+! Copy and paste
+URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select
+URxvt.copyCommand: xclip -i -selection clipboard
+URxvt.pasteCommand: xclip -o -selection clipboard
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-s: perl:keyboard-select:search
+
+! URL handling, highlighting
+URxvt.keysym.M-u: perl:url-select:select_next
+URxvt.urlLauncher: firefox
+URxvt.underlineURLs: true
+URxvt.urlButton: 1
