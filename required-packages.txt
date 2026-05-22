@@ -1,0 +1,10 @@
+git
+vim
+tmux
+
+bat
+eza
+fd
+fzf
+lsyncd
+ripgrep
