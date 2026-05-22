@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eu
+MACHINE="${1:?You need to specify a machine to connect to}"
+
+DOTFILES="$HOME/dotfiles"
+
+rsync -azv --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "andyls@$MACHINE:~/dotfiles"
+ssh -Y -t andyls@"$MACHINE" 'bash ~/dotfiles/install.sh'

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+if [[ -z "$1" ]]; then
+    echo "Usage: $0 <target>"
+    exit 1
+fi
+
+SETTINGS=$(mktemp)
+tee "$SETTINGS" <<EOF
+settings {
+    nodaemon = true
+}
+sync {
+    default.rsync,
+    source = "$PWD",
+    target = "$1",
+    delay = 1,
+    delete = true,
+    excludeFrom = ".git/info/exclude",
+    rsync = {
+        links = true,
+        times = true,
+        update = true,
+        perms = true
+    }
+}
+EOF
+
+lsyncd "$SETTINGS";
