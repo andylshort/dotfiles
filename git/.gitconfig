@@ -1,0 +1,57 @@
+[core]
+	# Automatically resolve linux-to-windows issues
+	autocrlf = false
+	trustctime = false
+
+	# Detect identation when tabs instead of spaces
+	whitespace = blank-at-eol,space-before-tab,tab-in-indent,trailing-space
+
+[color]
+	ui = auto
+
+[column]
+	ui = auto
+
+[pull]
+	rebase = true
+
+[merge]
+	renormalize = true
+	conflictstyle = diff3
+
+[diff]
+	algorithm = patience
+	colorMoved = true
+	noprefix = true
+	renames = copy
+	renameLimit = 999999
+
+[status]
+	submoduleSummary = true
+
+[submodule]
+	# Fetch submodules in five threads
+    fetchJobs = 5
+
+	# Doesn't affect clone. Means 'git pull' and others
+	# will recurse into the submodules
+	recurse = true
+
+[stash]
+	showPatch = true
+
+[pack]
+	# Use all cores when packing
+	threads = 0
+
+[help]
+	# Don't immediately auto-correct misspelled git commands
+	autocorrect = -1
+
+
+[user]
+	name = Andrew Lamzed-Short
+
+[include]
+	path = ~/.gitconfig.personal
+	path = ~/.gitconfig.work
