@@ -24,9 +24,7 @@ fi
 
 # fzf
 if command -v fzf > /dev/null; then
-    # Load fzf completions and keybindings if they exist in standard locations
-    [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && source /usr/share/doc/fzf/examples/key-bindings.bash
-    [ -f /usr/share/doc/fzf/examples/completion.bash ] && source /usr/share/doc/fzf/examples/completion.bash
+    eval "$(fzf --bash)"
     
     # Use ripgrep (rg) as the backend for fzf to ignore .git/ and node_modules/
     if command -v rg >/dev/null; then
