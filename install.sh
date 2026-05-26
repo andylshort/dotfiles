@@ -96,3 +96,8 @@ link_file tmux/.tmux.conf .tmux.conf
 
 # vim
 link_file vim/.vimrc .vimrc
+
+
+# Post-linking installation steps
+vim -es -u ~/.vimrc +PlugInstall +qall
+ln -sf ~/.fzf/bin/fzf ~/.local/bin/fzf

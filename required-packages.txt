@@ -5,6 +5,5 @@ tmux
 bat
 eza
 fd
-fzf
 lsyncd
 ripgrep
