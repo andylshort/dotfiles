@@ -1,9 +1,5 @@
 git
 vim
 tmux
-
-bat
-eza
-fd
 lsyncd
 ripgrep

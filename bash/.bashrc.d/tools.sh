@@ -1,20 +1,5 @@
 #!/usr/bin/env bash
 
-# bat (or batcat)
-if command -v batcat > /dev/null; then
-    # Debian/Ubuntu uses 'batcat', others use 'bat'
-    alias cat='batcat --paging=never'
-    export PAGER='batcat'
-elif command -v bat > /dev/null; then
-    alias cat='bat --paging=never'
-    export PAGER='bat'
-fi
-
-# eza
-if command -v eza > /dev/null; then
-    alias ls='eza'
-fi
-
 # ripgrep
 if command -v rg > /dev/null; then
     alias grep='rg'
@@ -36,9 +21,4 @@ if command -v fzf > /dev/null; then
         export FZF_TMUX=1
         export FZF_TMUX_OPTS="-p 80%,60%"
     fi
-fi
-
-# fd - replaces find
-if command -v fd > /dev/null; then
-    alias find='fd'
 fi
