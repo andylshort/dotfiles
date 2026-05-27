@@ -100,4 +100,4 @@ link_file vim/.vimrc .vimrc
 
 # Post-linking installation steps
 vim -es -u ~/.vimrc +PlugInstall +qall
-ln -sf ~/.fzf/bin/fzf ~/.local/bin/fzf
+ln -sf ~/.fzf/bin/* ~/.local/bin/
