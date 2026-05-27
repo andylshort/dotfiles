@@ -19,6 +19,8 @@ See `required-packages.txt`.
 _(You can just use `.local` files instead, but `.work` or `.personal` is a more meaningful name, semantically-speaking.)_
 
 ## TODO
-- Automate package installation
-- Integrate `fzf` into install and workflow
-- Exclude certain files from certain machines/workflows (e.g. between computers, personal/work)
+- [ ] Automate package installation
+- [ ] Integrate `fzf` into install and workflow
+- [ ] Exclude certain files from certain machines/workflows (e.g. between computers, personal/work)
+- [ ] Integrate OSC52 support into tmux, then [vim](https://github.com/ojroques/vim-oscyank)
+
