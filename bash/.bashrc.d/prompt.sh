@@ -10,8 +10,11 @@ C_PUR='\[\e[0;35m\]'
 C_CYN='\[\e[0;36m\]'
 C_RST='\[\e[0m\]'
 
+F_GRY='\[\e[1;30;40m\]'
+
 B_RED='\[\e[1;31m\]'
 B_GRN='\[\e[1;32m\]'
+B_YEL='\[\e[1;33m\]'
 B_BLU='\[\e[1;34m\]'
 B_CYN='\[\e[1;36m\]'
 
@@ -68,3 +71,50 @@ function write_prompt() {
 }
 
 PROMPT_COMMAND=write_prompt
+
+function __prompt_track_start() {
+    case "$BASH_COMMAND" in
+        LAST_EXIT=*|history\ *|write_prompt)
+            return
+            ;;
+    esac
+    command_start_time=${SECONDS}
+}
+
+trap '__prompt_track_start' DEBUG
+
+function write_prompt() {
+    local exit_code="${LAST_EXIT:-$?}"
+    PS1=""
+
+    local statuses
+    local elapsed=""
+
+    # 2. Calculate the elapsed time
+    if [[ -n "$command_start_time" ]]; then
+        elapsed=$((SECONDS - command_start_time))
+        unset command_start_time
+    fi
+
+    # Highlight if I'm in an SSH session
+    [[ -n "${SSH_CONNECTION}" ]] && statuses+="${F_GRY} ➔ [${B_RED}ssh${F_GRY}]${C_RST}"
+
+
+    if [ $exit_code -eq 0 ]; then
+        statuses+="${F_GRY} ➔ [${C_RST}${B_GRN}✔${F_GRY}]${C_RST}"
+    else
+        statuses+="${F_GRY} ➔ [${C_RST}${B_RED}✘${C_RST} $exit_code${F_GRY}]${C_RST}"
+    fi
+        
+    # Only show duration if the command took 1 second or longer
+    if [[ -n "$elapsed" && "$elapsed" -ge 1 ]]; then
+        statuses+="${F_GRY} ➔ [${C_RST}${B_YEL}${elapsed}s${F_GRY}]${C_RST}"
+    fi
+
+    local git_info
+    git_info=$(get_git_info 2>/dev/null)
+
+    PS1="${B_CYN}\u${C_RST}@${B_GRN}\h${C_RST}$statuses\n"
+    PS1+="${B_BLU}\w${C_RST}${git_info}\n"
+    PS1+="${F_GRY}>${C_RST} "
+}

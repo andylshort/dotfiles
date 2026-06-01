@@ -28,4 +28,4 @@ shopt -s cmdhist
 # - Append command to history immediately 
 # - Clear the history
 # - Then re-read to get up-to-date history
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="LAST_EXIT=\$?; history -a; history -c; history -r; $PROMPT_COMMAND"
