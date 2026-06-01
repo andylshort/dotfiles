@@ -23,4 +23,4 @@ _(You can just use `.local` files instead, but `.work` or `.personal` is a more 
 - [ ] Integrate `fzf` into install and workflow
 - [ ] Exclude certain files from certain machines/workflows (e.g. between computers, personal/work)
 - [ ] Integrate OSC52 support into tmux, then [vim](https://github.com/ojroques/vim-oscyank)
-
+- [ ] Fix Up and Down partial history search not working with vi-style bindings
