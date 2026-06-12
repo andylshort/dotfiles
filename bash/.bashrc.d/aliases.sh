@@ -20,6 +20,10 @@ alias env='env | sort'
 
 alias h='history'
 
+mkcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
 # - Trailing space rule
 alias sudo='sudo '
 alias xargs='xargs '
