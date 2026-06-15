@@ -24,6 +24,10 @@ mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
 
+cdls() {
+    cd -- "$1" && ls -A
+}
+
 # - Trailing space rule
 alias sudo='sudo '
 alias xargs='xargs '
