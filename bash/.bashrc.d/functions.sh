@@ -32,3 +32,13 @@ ex() {
         echo "'$1' is not a valid file"
     fi
 }
+
+
+# Run the same command multiple times
+run_n() {
+    local iterations=$1
+    shift
+    for _ in $(seq "$iterations"); do
+        "$@"
+    done
+}
