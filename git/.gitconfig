@@ -45,7 +45,7 @@
 	threads = 0
 
 [help]
-	# Don't immediately auto-correct misspelled git commands
+	# Autocorrect on a slight typo
 	autocorrect = -1
 
 
