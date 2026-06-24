@@ -47,3 +47,37 @@ set autoindent
 " Search
 set hlsearch " Highlight search results
 set incsearch " Highlight search results as you type
+
+" Copy and Paste
+" If running locally with a GUI/X11/Wayland, try native clipboard first
+if has('unnamedplus')
+    set clipboard=unnamedplus
+endif
+
+" Send yanked text to the terminal emulator via OSC 52
+function! OSC52Yank()
+    " Get the yanked text
+    let l:text = join(v:event.regcontents, "\n")
+    if empty(l:text)
+        return
+    endif
+
+    " Base64 encode it
+    let l:b64 = system("base64 | tr -d '\n'", l:text)
+    
+    " Construct the OSC 52 string
+    let l:osc52 = "\x1b]52;c;" . l:b64 . "\x07"
+    
+    " If inside tmux, wrap in tmux DCS sequence
+    if !empty($TMUX)
+        let l:osc52 = "\x1bPtmux;\x1b" . l:osc52 . "\x1b\\"
+    endif
+
+    " Write directly to the TTY to bypass Vim's standard output handling
+    call writefile([l:osc52], '/dev/tty', 'b')
+endfunction
+
+augroup ClipboardOSC52
+    autocmd!
+    autocmd TextYankPost * call OSC52Yank()
+augroup END
