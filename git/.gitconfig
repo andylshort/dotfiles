@@ -6,6 +6,9 @@
 	# Detect identation when tabs instead of spaces
 	whitespace = blank-at-eol,space-before-tab,tab-in-indent,trailing-space
 
+[init]
+	defaultBranch = main
+
 [color]
 	ui = auto
 
