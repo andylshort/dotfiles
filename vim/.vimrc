@@ -30,6 +30,7 @@ set updatetime=300
 
 " UI
 set number
+set relativenumber
 set cursorline
 set laststatus=2
 set background=dark
