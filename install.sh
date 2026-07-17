@@ -97,6 +97,9 @@ link_file tmux/.tmux.conf .tmux.conf
 # vim
 link_file vim/.vimrc .vimrc
 
+# starship
+link_file starship/starship.toml .config/starship.toml
+
 
 # Post-linking installation steps
 # - Install tmux plugin manager and plugins
@@ -108,3 +111,6 @@ vim -es -u $HOME/.vimrc +PlugInstall +qall
 
 # - Install fzf
 ln -sf $HOME/.fzf/bin/* $HOME/.local/bin/
+
+# - Install starship prompt
+curl -sS https://starship.rs/install.sh | sh
