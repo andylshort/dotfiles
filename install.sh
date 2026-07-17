@@ -97,7 +97,12 @@ link_file tmux/.tmux.conf .tmux.conf
 # vim
 link_file vim/.vimrc .vimrc
 
+# starship
+link_file starship/starship.toml .config/starship.toml
+
 
 # Post-linking installation steps
 vim -es -u ~/.vimrc +PlugInstall +qall
 ln -sf ~/.fzf/bin/* ~/.local/bin/
+
+curl -sS https://starship.rs/install.sh | sh
