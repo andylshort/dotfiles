@@ -16,7 +16,15 @@ fi
 # - Convenience aliases
 alias ll='ls -lah'
 
-alias env='env | sort'
+env() {
+    if [ $# -eq 0 ]; then
+        # Sort when I just want to print all environment variables
+        command env | sort
+    else
+        # If arguments are passed to create a new environment, behave normally
+        command env "$@"
+    fi
+}
 
 alias h='history'
 
