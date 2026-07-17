@@ -28,6 +28,11 @@ cdls() {
     cd -- "$1" && ls -A
 }
 
+count-files() {
+    # TODO: Accept parameter for directory
+    find . -type f | wc -l
+}
+
 # - Trailing space rule
 alias sudo='sudo '
 alias xargs='xargs '
