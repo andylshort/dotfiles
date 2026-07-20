@@ -106,7 +106,9 @@ link_file helix/config.toml .config/helix/config.toml
 
 # Post-linking installation steps
 # - Install tmux plugin manager and plugins
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+fi
 bash $HOME/.tmux/plugins/tpm/bin/install_plugins
 
 # - Install vim plugin manager and plugins
