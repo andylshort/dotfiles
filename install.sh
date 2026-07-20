@@ -99,5 +99,12 @@ link_file vim/.vimrc .vimrc
 
 
 # Post-linking installation steps
-vim -es -u ~/.vimrc +PlugInstall +qall
-ln -sf ~/.fzf/bin/* ~/.local/bin/
+# - Install tmux plugin manager and plugins
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+bash $HOME/.tmux/plugins/tpm/bin/install_plugins
+
+# - Install vim plugin manager and plugins
+vim -es -u $HOME/.vimrc +PlugInstall +qall
+
+# - Install fzf
+ln -sf $HOME/.fzf/bin/* $HOME/.local/bin/
