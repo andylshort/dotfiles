@@ -5,6 +5,7 @@ command = /usr/bin/zsh
 
 # Automatically inject Zsh shell integration
 shell-integration = zsh
+shell-integration-features = sudo,ssh-terminfo,ssh-env
 
 theme = Dracula
 
