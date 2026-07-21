@@ -1,0 +1,13 @@
+language = en
+
+# Use zsh
+command = /usr/bin/zsh
+
+# Automatically inject Zsh shell integration
+shell-integration = zsh
+
+theme = Dracula
+
+# Fonts
+font-family = "JetBrainsMono Nerd Font"
+font-size = 11
