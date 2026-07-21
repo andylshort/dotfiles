@@ -110,5 +110,10 @@ alias reload="source $HOME/.zshrc"
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+# ---- XX: Local Override ---
+if [[ -f "${HOME}/.zshrc.work" ]]; then
+    source "${HOME}/.zshrc.work"
+fi
+
 # Uncomment to profile speed
 # zprof

@@ -5,6 +5,6 @@ if [[ -z "$SESSION" ]]; then
 fi
 
 if ! tmux has-session -t "$SESSION" 2> /dev/null; then
-    tmux new-session -d -s "$SESSION" "exec bash -l"
+    tmux new-session -d -s "$SESSION"
 fi
 tmux attach -t "$SESSION"
