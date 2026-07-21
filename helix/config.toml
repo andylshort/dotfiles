@@ -2,6 +2,7 @@ theme = "dracula"
 
 [editor]
 line-number = "relative"
+cursorline = true
 
 [keys.normal]
 C-g = [
