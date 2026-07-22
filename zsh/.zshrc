@@ -3,6 +3,9 @@
 # Uncomment to profile speed
 # zmodload zsh/zprof
 
+# emacs keybindings (for now...)
+bindkey -e
+
 # --- 1. Environment Variables ---
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR="vim"
@@ -45,7 +48,7 @@ fi
 
 # 2. Compile the dump file to binary bytecode (.zwc) if needed
 if [[ ! -f "${ZSH_COMPDUMP}.zwc" || "${ZSH_COMPDUMP}" -nt "${ZSH_COMPDUMP}.zwc" ]]; then
-  zcompile "$ZSH_COMPDUMP"
+    zcompile "$ZSH_COMPDUMP"
 fi
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # Case-insensitive
@@ -109,6 +112,48 @@ alias reload="source $HOME/.zshrc"
 # --- 9. Keybindings ---
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
+
+# Reverse through completion suggestions on Shift-Tab
+bindkey '^[[Z' reverse-menu-complete
+
+# Ctrl-x Ctrl-e to edit current command in $EDITOR (from bash)
+autoload edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# Fix Insert/Delete/Home/End keys
+typeset -A key
+key[Home]=${terminfo[khome]}
+key[End]=${terminfo[kend]}
+key[Insert]=${terminfo[kich1]}
+key[Delete]=${terminfo[kdch1]}
+[[ -n "${key[Home]}"   ]]  && bindkey "${key[Home]}"   beginning-of-line
+[[ -n "${key[End]}"    ]]  && bindkey "${key[End]}"    end-of-line
+[[ -n "${key[Insert]}" ]]  && bindkey "${key[Insert]}" overwrite-mode
+[[ -n "${key[Delete]}" ]]  && bindkey "${key[Delete]}" delete-char
+
+# Set ANSI fallbacks
+# - Home and End
+bindkey '^[[H' beginning-of-line
+bindkey '^[[1~' beginning-of-line
+bindkey '^A' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[4~' end-of-line
+bindkey '^E' end-of-line
+
+# - Delete & Backspace 
+bindkey '^[[3~' delete-char          # Standard Delete
+bindkey '^?'    backward-delete-char # Backspace
+
+# - Shift + Modifiers 
+bindkey '^[[3;2~' kill-line          # Shift + Delete (erases line from cursor)
+bindkey '^H'      backward-kill-word # Ctrl + Backspace
+
+
+# ---- 10. Misc ----
+# Many terminals use Ctrl-s and Ctrl-q for flow control by default. This
+# interferes with using Ctrl-r and Ctrl-s for history searching. Disable it.
+stty stop undef
 
 # ---- XX: Local Override ---
 if [[ -f "${HOME}/.zshrc.work" ]]; then
