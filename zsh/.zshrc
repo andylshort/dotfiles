@@ -53,6 +53,7 @@ fi
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}' # Case-insensitive
 zstyle ':completion:*' menu select                     # Arrow-key selection menu
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
 # --- 5. Interactive Integrations (fzf, zoxide, starship) ---
 
@@ -70,6 +71,10 @@ if command -v fzf &> /dev/null; then
 
     # If I type a full query, and no matches, paste as command
     export FZF_CTRL_R_OPTS="--bind enter:accept-or-print-query"
+
+    export FZF_DEFAULT_COMMAND="--with-shell='zsh -fc'"
+
+    export FZF_TMUX=0
 fi
 
 # --- 6. Plugins (Loaded via Zinit) ---
@@ -105,6 +110,21 @@ alias gp="git push"
 alias gfo="git fetch origin"
 alias grb="git rebase"
 alias grbm="git rebase origin/master"
+
+# Colouring output
+# Enable colorized ls output
+alias ls='ls --color=auto'
+alias ll='ls -lah --color=auto'
+
+# Enable colorized grep family
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Colorize diff, ip, and less
+alias diff='diff --color=auto'
+alias ip='ip -color=auto'
+export LESS="-R" # Preserves colors when piping commands to less
 
 # Config
 alias reload="source $HOME/.zshrc"
@@ -155,65 +175,9 @@ bindkey '^H'      backward-kill-word # Ctrl + Backspace
 # interferes with using Ctrl-r and Ctrl-s for history searching. Disable it.
 stty stop undef
 
-# ------------------- safe paste mode -------------------------------
-
-# When pasting multiple lines into the terminal, create a single multi-line
-# command that you can edit, instead of executing everything all at once.
-# The following version is copied from oh-my-zsh.
-
-# Code from Mikael Magnusson: http://www.zsh.org/mla/users/2011/msg00367.html
-#
-# Requires xterm, urxvt, iTerm2 or any other terminal that supports bracketed
-# paste mode as documented: http://www.xfree86.org/current/ctlseqs.html
-
-# create a new keymap to use while pasting
-bindkey -N paste
-# make everything in this keymap call our custom widget
-bindkey -R -M paste "^@"-"\M-^?" paste-insert
-# these are the codes sent around the pasted text in bracketed
-# paste mode.
-# do the first one with both -M viins and -M vicmd in vi mode
-bindkey '^[[200~' _start_paste
-bindkey -M paste '^[[201~' _end_paste
-# insert newlines rather than carriage returns when pasting newlines
-bindkey -M paste -s '^M' '^J'
-
-zle -N _start_paste
-zle -N _end_paste
-zle -N zle-line-init _zle_line_init
-zle -N zle-line-finish _zle_line_finish
-zle -N paste-insert _paste_insert
-
-# switch the active keymap to paste mode
-function _start_paste() {
-    bindkey -A paste main
-}
-
-# go back to our normal keymap, and insert all the pasted text in the
-# command line. this has the nice effect of making the whole paste be
-# a single undo/redo event.
-function _end_paste() {
-    #use bindkey -v here with vi mode probably. maybe you want to track
-    #if you were in ins or cmd mode and restore the right one.
-    bindkey -e
-    LBUFFER+=$_paste_content
-    unset _paste_content
-}
-
-function _paste_insert() {
-    _paste_content+=$KEYS
-}
-
-function _zle_line_init() {
-    # Tell terminal to send escape codes around pastes.
-    [[ $TERM == rxvt-unicode || $TERM == xterm || $TERM = xterm-256color || $TERM = screen || $TERM = screen-256color ]] && printf '\e[?2004h'
-}
-
-function _zle_line_finish() {
-    # Tell it to stop when we leave zle, so pasting in other programs
-    # doesn't get the ^[[200~ codes around the pasted text.
-    [[ $TERM == rxvt-unicode || $TERM == xterm || $TERM = xterm-256color || $TERM = screen || $TERM = screen-256color ]] && printf '\e[?2004l'
-}
+# Smarter paste
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
 
 # ---- XX: Local Override ---
 if [[ -f "${HOME}/.zshrc.work" ]]; then
