@@ -7,8 +7,8 @@ command = /usr/bin/zsh
 shell-integration = zsh
 shell-integration-features = sudo,ssh-terminfo,ssh-env
 
-theme = Dracula
+theme = "TokyoNight Moon"
 
 # Fonts
 font-family = "JetBrainsMono Nerd Font"
-font-size = 11
+font-size = 12
