@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 # Installation script
-# TODO: Conditional include based on personal/work?
 
 DOTFILES=$(dirname -- "$(readlink -f -- "$0"; )"; )
 
 link_dir() {
     local src="$DOTFILES/$1"
     local dest="$HOME/$2"
+
+    echo "> [dir] Linking $src to $dest"
 
     # Ensure the source directory actually exists
     if [[ ! -d "$src" ]]; then
@@ -34,6 +35,7 @@ link_dir() {
         # 2. Key Fix: Only link if it's a FILE. 
         # This prevents symlinking a subdirectory into .local/bin
         if [[ -d "$f" ]]; then
+            echo "Not a file, $f is a dir. Skipping."
             continue
         fi
 
@@ -41,6 +43,7 @@ link_dir() {
 
         # 3. Idempotency: skip if the link is already perfect
         if [[ -L "$target" && $(readlink -f "$target") == "$(readlink -f "$f")" ]]; then
+            echo "Link already good. Skipping."
             continue
         fi
 
@@ -59,6 +62,8 @@ link_dir() {
 link_file() {
     local src="$DOTFILES/$1"
     local dest="$HOME/$2"
+
+    echo "> [file] Linking $src to $dest"
 
     mkdir -p "$(dirname "$dest")"
 
@@ -104,7 +109,9 @@ link_file starship/starship.toml .config/starship.toml
 link_file helix/config.toml .config/helix/config.toml
 
 # zsh
-link_file zsh/.zshrc .zshrc
+link_dir zsh/conf.d .config/zsh/conf.d
+link_file zsh/.zshenv .zshenv
+link_file zsh/.zshrc .config/zsh/.zshrc
 
 # ghostty
 link_file ghostty/config.ghostty .config/ghostty/config.ghostty
