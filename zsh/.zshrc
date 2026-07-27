@@ -40,7 +40,7 @@ ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump-$ZSH_VERSION"
 [[ -d "${ZSH_COMPDUMP:h}" ]] || mkdir -p "${ZSH_COMPDUMP:h}"
 
 # 1. If cache is older than 24h, rebuild it. Otherwise, use -C to skip all 1,050 compdef calls.
-if [[ -n ${ZSH_COMPDUMP}(#qN.mh+24) ]]; then
+if [[ ! -f "$ZSH_COMPDUMP" || -n "$(find "$ZSH_COMPDUMP" -mtime +0 2>/dev/null)" ]]; then
     compinit -i -u -d "$ZSH_COMPDUMP"
 else
     compinit -C -i -u -d "$ZSH_COMPDUMP"
@@ -102,14 +102,32 @@ if command -v starship &> /dev/null; then
 fi
 
 # --- 8. Aliases ---
+# This will enable us to use aliases in sudo.
+# (If alias finishes with a space or tab, the shell will check if the next command is also aliased.)
+# Source: https://github.com/mayah/home/blob/master/.zsh/zshrc.d/alias.zsh
+alias sudo='sudo '
+
 # Git
 alias gs="git status"
+
 alias ga="git add"
+alias gau="git add -u"
+
 alias gc="git commit"
+
 alias gp="git push"
+
 alias gfo="git fetch origin"
 alias grb="git rebase"
 alias grbm="git rebase origin/master"
+
+alias gco="git checkout"
+alias gsw="git switch"
+
+# System
+alias sc="systemctl"
+alias ssc="sudo systemctl"
+alias jc="journalctl"
 
 # Colouring output
 # Enable colorized ls output
@@ -161,9 +179,16 @@ bindkey '^[[F' end-of-line
 bindkey '^[[4~' end-of-line
 bindkey '^E' end-of-line
 
+# - Per word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;5D" backward-word
+
 # - Delete & Backspace 
 bindkey '^[[3~' delete-char          # Standard Delete
 bindkey '^?'    backward-delete-char # Backspace
+bindkey "^[[3;3~" delete-word
 
 # - Shift + Modifiers 
 bindkey '^[[3;2~' kill-line          # Shift + Delete (erases line from cursor)
