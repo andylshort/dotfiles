@@ -1,0 +1,34 @@
+# This will enable us to use aliases in sudo.
+# (If alias finishes with a space or tab, the shell will check if the next command is also aliased.)
+# Source: https://github.com/mayah/home/blob/master/.zsh/zshrc.d/alias.zsh
+alias sudo='sudo '
+alias xargs='xargs '
+
+# System
+alias sc="systemctl"
+alias ssc="sudo systemctl"
+alias jc="journalctl"
+
+alias ll='ls -lah'
+
+env() {
+    if [ $# -eq 0 ]; then
+        # Sort when I just want to print all environment variables
+        command env | sort
+    else
+        # If arguments are passed to create a new environment, behave normally
+        command env "$@"
+    fi
+}
+
+mkcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
+reload() {
+    if [ -n "$ZSH_VERSION" ]; then
+        source "${ZDOTDIR:-$HOME}/.zshrc"
+    elif [ -n "$BASH_VERSION" ]; then
+        source "$HOME/.bashrc"
+    fi
+}

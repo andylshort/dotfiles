@@ -7,6 +7,8 @@ if ! command -v stow &> /dev/null; then
 fi
 
 packages=(
+    common
+    
     bash
     ghostty
     git
