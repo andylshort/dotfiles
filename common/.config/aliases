@@ -28,7 +28,9 @@ mkcd() {
 reload() {
     if [ -n "$ZSH_VERSION" ]; then
         source "${ZDOTDIR:-$HOME}/.zshrc"
+        echo "ZSH configuration reloaded."
     elif [ -n "$BASH_VERSION" ]; then
         source "$HOME/.bashrc"
+        echo "Bash configuration reloaded."
     fi
 }

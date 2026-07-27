@@ -20,7 +20,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 # - Common aliases and functionality
-[[ -d "$XDG_CONFIG_HOME/aliases" ]] && source "$XDG_CONFIG_HOME/aliases"
+[[ -f "$XDG_CONFIG_HOME/aliases" ]] && source "$XDG_CONFIG_HOME/aliases"
 
 # - Load all of the modular .bashrc subfiles in a certain order
 if [[ -d "$HOME/.bashrc.d" ]]; then
