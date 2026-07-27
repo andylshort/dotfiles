@@ -1,7 +1,4 @@
-scripts/*/
-
 work/*
 
-*.local
-*.work
-*.personal
+*.work$
+*.personal$

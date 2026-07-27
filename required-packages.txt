@@ -1,5 +1,8 @@
+stow
+zsh
 git
 vim
 tmux
 lsyncd
 ripgrep
+helix
