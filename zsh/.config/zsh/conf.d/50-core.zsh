@@ -27,7 +27,7 @@ alias ip='ip -color=auto'
 export LESS="-R" # Preserves colors when piping commands to less
 
 # Config
-alias reload="source $HOME/.zshrc"
+alias reload="source ${ZDOTDIR:-$HOME}/.zshrc"
 
 
 # Many terminals use Ctrl-s and Ctrl-q for flow control by default. This
