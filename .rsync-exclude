@@ -1,8 +1,7 @@
 scripts/work/*
-scripts/better-lsyncd
 scripts/ssh-autostart-plasma.sh
 scripts/sync-dotfiles-to
-.env-type
+work/*
 .gitignore
 .rsync-exclude
 README.md

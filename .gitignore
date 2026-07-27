@@ -1,6 +1,6 @@
-.env-type
-
 scripts/*/
+
+work/*
 
 *.local
 *.work
