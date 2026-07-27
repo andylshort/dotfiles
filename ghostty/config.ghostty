@@ -1,0 +1,14 @@
+language = en
+
+# Use zsh
+command = /usr/bin/zsh
+
+# Automatically inject Zsh shell integration
+shell-integration = zsh
+shell-integration-features = sudo,ssh-terminfo,ssh-env
+
+theme = "TokyoNight Moon"
+
+# Fonts
+font-family = "JetBrainsMono Nerd Font"
+font-size = 12

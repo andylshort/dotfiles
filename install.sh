@@ -106,6 +106,9 @@ link_file helix/config.toml .config/helix/config.toml
 # zsh
 link_file zsh/.zshrc .zshrc
 
+# ghostty
+link_file ghostty/config.ghostty .config/ghostty/config.ghostty
+
 
 # Post-linking installation steps
 # - Install tmux plugin manager and plugins
