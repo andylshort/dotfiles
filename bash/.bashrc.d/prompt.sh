@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 # Prompt
 
+# Firstly, try loading starship. If it's not available, default to my custom prompt
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash)"
+    return 0
+fi
+
 # Use non-printing wrapper \[ \] for colors in PS1 to prevent line-wrapping bugs
 C_RED='\[\e[0;31m\]'
 C_GRN='\[\e[0;32m\]'
@@ -18,23 +24,12 @@ B_YEL='\[\e[1;33m\]'
 B_BLU='\[\e[1;34m\]'
 B_CYN='\[\e[1;36m\]'
 
-# 1. The Fix: Separated Branch and Upstream Logic
 
-# Instead of relying on git rev-parse to grab both the branch and upstream at the exact same time, the script now uses git symbolic-ref --short HEAD to just get the branch name. This always works locally. The upstream check is moved further down inside an if block that fails gracefully if no upstream exists.
-# 2. Upgrade: Detached HEAD Safety
-
-# If you ever checkout a specific commit hash or an interactive rebase gets paused, your old function would break or show nothing. The update checks if branch is empty, and if so, safely outputs detached@abc123f.
-# 3. Upgrade: Merge Conflict Indicator (✘)
-
-# Your original while loop looked for changes and staged files, but missed merge conflicts. If you hit a conflict, git status --porcelain outputs codes like UU or AA. The upgraded loop explicitly checks for these and appends a sharp red ✘ so you immediately know your repository is in a broken state.
-# 4. Upgrade: Untracked/No-Upstream Indicator (☁!)
-
-# When a branch has no upstream tracking branch (like when you just ran git checkout -b feature-branch), the function now adds a subtle yellow ☁! (or whatever symbol you prefer) to visually remind you that this branch only exists on your local machine and hasn't been pushed to GitHub/GitLab yet.
 function get_git_info() {
     # Ensure we are inside a git repo first
     git rev-parse --is-inside-work-tree &>/dev/null || return
 
-    # 1. Get branch name safely without assuming upstream exists
+    # Get branch name safely without assuming upstream exists
     local branch
     branch=$(git symbolic-ref --short HEAD 2>/dev/null)
     if [[ -z "$branch" ]]; then
@@ -42,7 +37,7 @@ function get_git_info() {
         branch="detached@${branch}"
     fi
 
-    # 2. Dump the entire status into a single variable at once.
+    # Dump the entire status into a single variable at once.
     local git_status
     git_status=$(git status --porcelain --ignore-submodules 2>/dev/null)
 
@@ -65,7 +60,7 @@ function get_git_info() {
         status_symbols+="?"
     fi
 
-    # 3. Upstream counts (Only runs if upstream exists, preventing the crash)
+    # Upstream counts (Only runs if upstream exists, preventing the crash), with untracked/no-upstream indicator (☁!)
     local counts=""
     if git rev-parse --symbolic-full-name '@{u}' &>/dev/null; then
         local ahead_behind
@@ -102,7 +97,7 @@ function write_prompt() {
     local statuses=""
     local elapsed=""
 
-    # 2. Calculate the elapsed time
+    # Calculate the elapsed time
     if [[ -n "$command_start_time" ]]; then
         elapsed=$((SECONDS - command_start_time))
         unset command_start_time
