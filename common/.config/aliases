@@ -34,3 +34,5 @@ reload() {
         echo "Bash configuration reloaded."
     fi
 }
+
+# vim: ft=sh

@@ -1,0 +1,8 @@
+[[language]]
+name = "bash"
+file-types = [
+  "sh", "bash", "bashrc", ".bashrc", ".bash_profile", ".bash_login", 
+  ".profile", ".bash_logout", ".bash_aliases", ".xprofile", ".xinitrc", 
+  "PKGBUILD", "install", "env", 
+  { glob = "aliases" }
+]
