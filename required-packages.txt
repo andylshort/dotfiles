@@ -6,3 +6,4 @@ tmux
 lsyncd
 ripgrep
 helix
+tree

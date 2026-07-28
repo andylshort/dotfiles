@@ -19,6 +19,10 @@ if command -v tput >/dev/null 2>&1 && [ "$(tput colors 2>/dev/null || echo 0)" -
 
     # Preserve colours when piping commands to less
     export LESS='-R'
+
+    if command -v tree >/dev/null 2>&1; then
+        alias tree='tree -C'
+    fi
 fi
 
 # System
