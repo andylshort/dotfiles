@@ -15,5 +15,3 @@ export EDITOR="vim"
 export VISUAL="vim"
 
 export BROWSER="firefox"
-
-export LESS="-R" # Preserves colors when piping commands to less

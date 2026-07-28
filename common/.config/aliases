@@ -4,13 +4,32 @@
 alias sudo='sudo '
 alias xargs='xargs '
 
-# System
-alias sc="systemctl"
-alias ssc="sudo systemctl"
-alias jc="journalctl"
+# Colourise if available, a.k.a. check if tput is available and if the terminal supports at least 8 colors
+if command -v tput >/dev/null 2>&1 && [ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]; then
+    # GNU tools (Linux, or macOS with coreutils installed)
+    alias ls='ls --color=auto'
 
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+
+    alias diff='diff --color=auto'
+    
+    alias ip='ip -color=auto'
+
+    # Preserve colours when piping commands to less
+    export LESS='-R'
+fi
+
+# System
+alias sc='systemctl'
+alias ssc='sudo systemctl'
+alias jc='journalctl'
+
+# Conveniences
 alias ll='ls -lah'
 
+# Enhancements
 env() {
     if [ $# -eq 0 ]; then
         # Sort when I just want to print all environment variables
@@ -21,6 +40,7 @@ env() {
     fi
 }
 
+# Custom
 mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
@@ -28,10 +48,10 @@ mkcd() {
 reload() {
     if [ -n "$ZSH_VERSION" ]; then
         source "${ZDOTDIR:-$HOME}/.zshrc"
-        echo "ZSH configuration reloaded."
+        echo 'ZSH configuration reloaded.'
     elif [ -n "$BASH_VERSION" ]; then
         source "$HOME/.bashrc"
-        echo "Bash configuration reloaded."
+        echo 'Bash configuration reloaded.'
     fi
 }
 
