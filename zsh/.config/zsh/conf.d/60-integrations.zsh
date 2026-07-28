@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/integrations.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/60-integrations.zsh
 
 # Zoxide (Smarter 'cd')
 # if command -v zoxide &> /dev/null; then

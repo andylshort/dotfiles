@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/history.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/40-history.zsh
 
 # emacs-style keybindings
 bindkey -e

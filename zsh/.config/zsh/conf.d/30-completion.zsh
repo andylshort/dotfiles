@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/completion.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/30-completion.zsh
 
 autoload -Uz compinit
 

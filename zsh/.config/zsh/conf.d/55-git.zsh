@@ -1,18 +1,21 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/git.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/55-git.zsh
 
 # Aliases
-alias gs="git status"
+alias gs='git status'
 
-alias ga="git add"
-alias gau="git add -u"
+alias gd='git diff'
 
-alias gc="git commit"
+alias ga='git add'
+alias gau='git add -u'
 
-alias gp="git push"
+alias gc='git commit'
 
-alias gfo="git fetch origin"
-alias grb="git rebase"
-alias grbm="git rebase origin/master"
+alias gp='git push'
 
-alias gco="git checkout"
-alias gsw="git switch"
+alias gfo='git fetch origin'
+
+alias grb='git rebase'
+alias grbm='git rebase origin/master'
+
+alias gco='git checkout'
+alias gsw='git switch'

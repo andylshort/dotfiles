@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/history.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/10-history.zsh
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000000

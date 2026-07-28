@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/plugins.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/20-plugins.zsh
 
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [[ ! -d "$ZINIT_HOME/.git" ]]; then
