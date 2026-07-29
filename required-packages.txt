@@ -7,3 +7,4 @@ lsyncd
 ripgrep
 helix
 tree
+atuin

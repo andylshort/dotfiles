@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # Installation script
 
+# TODO: Check all prerequisites, or have gated install/config
 if ! command -v stow &> /dev/null; then
     echo "GNU Stow not installed. Please install it and try again."
+    exit 1
+fi
+if ! command -v atuin &> /dev/null; then
+    echo "atuin not installed. Please install it and try again."
     exit 1
 fi
 
@@ -18,6 +23,8 @@ packages=(
     tmux
     vim
     zsh
+
+    atuin
 )
 
 for pkg in "${packages[@]}"; do
@@ -47,6 +54,13 @@ ln -sf $HOME/.fzf/bin/* $HOME/.local/bin/
 # - Install starship prompt
 if ! command -v starship &> /dev/null; then
     curl -sS https://starship.rs/install.sh | sh -s -- -y
+fi
+
+# - Install atuin and shell completions
+if command -v atuin >/dev/null; then
+    COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
+    mkdir -p "$COMP_DIR"
+    atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 fi
 
 

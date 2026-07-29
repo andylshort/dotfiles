@@ -1,5 +1,8 @@
 # ${XDG_CONFIG_HOME}/zsh/conf.d/30-completion.zsh
 
+# Prepend XDG completion directory to fpath BEFORE compinit
+fpath=("${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions" $fpath)
+
 autoload -Uz compinit
 
 # Define explicit dump location

@@ -7,7 +7,8 @@
 
 # fzf Setup & Keybindings
 if command -v fzf &> /dev/null; then
-    eval "$(fzf --zsh)"
+    # Source fzf, disabling the Ctrl-r keybinding (use atuin instead)
+    FZF_CTRL_R_COMMAND= FZF_ALT_C_COMMAND= source <(fzf --zsh)
 
     # Modern fzf preview defaults (uses 'eza' or 'ls' for directories, 'bat' or 'cat' for files)
     export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --inline-info"
