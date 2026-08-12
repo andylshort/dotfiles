@@ -15,6 +15,9 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'junegunn/fzf.vim'
     Plug 'christoomey/vim-tmux-navigator'
+
+    Plug 'dracula/vim', { 'as': 'dracula' }
+
     Plug 'tpope/vim-commentary' " Essential for general text editing
 call plug#end()
 
@@ -39,7 +42,7 @@ if (has("termguicolors"))
   set termguicolors
 endif
 set background=dark
-set t_Co=256
+colorscheme dracula
 
 " Indentation
 set expandtab " Convert tabs to spaces
