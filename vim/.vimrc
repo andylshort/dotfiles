@@ -19,6 +19,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'dracula/vim', { 'as': 'dracula' }
 
     Plug 'tpope/vim-commentary' " Essential for general text editing
+    Plug 'tpope/vim-fugitive' 
 call plug#end()
 
 " - Configuration
