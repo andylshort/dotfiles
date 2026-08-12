@@ -6,8 +6,8 @@ if ! command -v stow &> /dev/null; then
     echo "GNU Stow not installed. Please install it and try again."
     exit 1
 fi
-if ! command -v atuin &> /dev/null; then
-    echo "atuin not installed. Please install it and try again."
+if ! command -v entr &> /dev/null; then
+    echo "entr not installed. Please install it and try again."
     exit 1
 fi
 
@@ -57,11 +57,13 @@ if ! command -v starship &> /dev/null; then
 fi
 
 # - Install atuin and shell completions
-if command -v atuin >/dev/null; then
-    COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
-    mkdir -p "$COMP_DIR"
-    atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
+if ! command -v atuin >/dev/null; then
+    curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 fi
+
+COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
+mkdir -p "$COMP_DIR"
+atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 
 
 # Work override
