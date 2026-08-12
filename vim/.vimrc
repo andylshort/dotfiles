@@ -10,6 +10,9 @@ endif
 " - Installation
 call plug#begin('~/.vim/plugged')
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin --no-update-rc' } " Installs fzf binary locally
+
+    Plug 'tpope/vim-sensible'
+
     Plug 'junegunn/fzf.vim'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'tpope/vim-commentary' " Essential for general text editing
@@ -23,16 +26,18 @@ let g:fzf_bin = '~/.fzf/bin/fzf'
 let g:fzf_layout = { 'tmux': '-p80%,60%' }
 
 " General Configuration
-set nocompatible " Disable compatibility with the older vi
 set encoding=utf-8
-set wildmenu
 set updatetime=300
 
 " UI
 set number
 set relativenumber
 set cursorline
-set laststatus=2
+
+" Enable true color support
+if (has("termguicolors"))
+  set termguicolors
+endif
 set background=dark
 set t_Co=256
 
@@ -41,13 +46,11 @@ set expandtab " Convert tabs to spaces
 set tabstop=4
 set shiftwidth=0   " Use tabstop
 set softtabstop=-1 " Use tabstop
-set smarttab
 set smartindent
 set autoindent
 
 " Search
 set hlsearch " Highlight search results
-set incsearch " Highlight search results as you type
 
 " Copy and Paste
 " If running locally with a GUI/X11/Wayland, try native clipboard first
