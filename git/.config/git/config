@@ -9,6 +9,9 @@
 [init]
 	defaultBranch = main
 
+[commit]
+	verbose = true
+
 [color]
 	ui = auto
 
@@ -54,6 +57,13 @@
 
 [user]
 	name = Andrew Lamzed-Short
+
+[pager]
+	branch = false
+
+[alias]
+    latest-branches = "branch --sort=-committerdate --format='%(align:18,left)%(committerdate:relative)%(end)%(align:20,left)%(authorname)%(end)%(refname:short)'"
+    lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 [include]
 	path = ~/.gitconfig.personal
