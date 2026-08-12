@@ -11,8 +11,11 @@ alias gau='git add -u'
 alias gc='git commit'
 
 alias gp='git push'
+alias gpf='git push --force-with-lease'
 
-alias gfo='git fetch origin'
+alias gf='git fetch --recurse-submodules'
+alias gfa='git fetch --all --recurse-submodules'
+alias gfo='git fetch origin --recurse-submodules'
 
 alias grb='git rebase'
 alias grbm='git rebase origin/master'
