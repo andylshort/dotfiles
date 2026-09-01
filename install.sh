@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Installation script
 
+cd "$(dirname "$0")" || exit
+
 # TODO: Check all prerequisites, or have gated install/config
 if ! command -v stow &> /dev/null; then
     echo "GNU Stow not installed. Please install it and try again."
@@ -57,12 +59,14 @@ if ! command -v starship &> /dev/null; then
 fi
 
 # - Install atuin and shell completions
+export PATH="$HOME/.atuin/bin:$PATH"
 if ! command -v atuin >/dev/null; then
     curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 fi
 
 COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
 mkdir -p "$COMP_DIR"
+
 atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 
 
