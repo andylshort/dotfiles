@@ -60,7 +60,7 @@ fi
 
 # - Install atuin and shell completions
 export PATH="$HOME/.atuin/bin:$PATH"
-if ! command -v atuin >/dev/null; then
+if ! command -v atuin &> /dev/null; then
     curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
 fi
 
