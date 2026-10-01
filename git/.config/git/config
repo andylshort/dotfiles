@@ -64,6 +64,7 @@
 [alias]
     latest-branches = "branch --sort=-committerdate --format='%(align:18,left)%(committerdate:relative)%(end)%(align:20,left)%(authorname)%(end)%(refname:short)'"
     lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+    up = !git fetch --no-recurse-submodules origin && git rebase origin/HEAD && git submodule sync --recursive && git submodule update --init --recursive
 
 [include]
 	path = ~/.gitconfig.personal
