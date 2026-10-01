@@ -41,7 +41,8 @@ for pkg in "${packages[@]}"; do
     # Check if the folder actually exists before trying to stow it
     if [[ -d "$pkg" ]]; then
         echo "-> Stowing $pkg"
-        stow -t "$HOME" "$pkg"
+        # -R (restow) also prunes links to files that no longer exist in the package
+        stow -R -t "$HOME" "$pkg"
     else
         echo "-> Skipping $pkg (directory not found)"
     fi

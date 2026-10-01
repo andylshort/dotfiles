@@ -1,7 +1,9 @@
 scripts/work/*
-scripts/ssh-autostart-plasma.sh
-scripts/sync-dotfiles-to
+scripts/.local/bin/ssh-autostart-plasma.sh
+scripts/.local/bin/sync-dotfiles-to
 work/*
 .gitignore
 .rsync-exclude
 README.md
+tmux/.config/tmux/plugins/
+.zcompdump*
