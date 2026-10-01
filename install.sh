@@ -34,6 +34,8 @@ packages=(
 # it rather than folding the whole directory into a symlink back at the repo.
 COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
 mkdir -p "$COMP_DIR"
+# Likewise for autostart entries, so ones added via System Settings don't land in the repo
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
 
 for pkg in "${packages[@]}"; do
     # Check if the folder actually exists before trying to stow it
