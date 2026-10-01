@@ -42,9 +42,10 @@ done
 
 # Post-linking installation steps
 # - Install tmux plugin manager and plugins
-if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
-    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-    bash $HOME/.tmux/plugins/tpm/bin/install_plugins
+TPM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tpm"
+if [ ! -d "$TPM_DIR" ]; then
+    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
+    bash "$TPM_DIR/bin/install_plugins"
 fi
 
 # - Install vim plugin manager and plugins
