@@ -85,6 +85,8 @@ if (($#)); then
 else
     target=$(pick_ref)
 fi
+# Drop the "--" separating the ref from git log options, or git log takes them as paths.
+[[ ${1-} == -- ]] && shift
 
 # Accept "A..B" / "A...B" as well as a bare ref (implicitly HEAD...ref).
 case "$target" in

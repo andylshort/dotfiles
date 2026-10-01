@@ -4,33 +4,45 @@
 set -euo pipefail
 
 if [[ $# -gt 0 ]]; then
-    for s in "$@"; do tmux kill-session -t "=$s"; done
-    exit
+    selected=("$@")
+else
+    mapfile -t sessions < <(tmux list-sessions -F '#{session_name}' 2> /dev/null || true)
+
+    case ${#sessions[@]} in
+        0)
+            echo "No tmux sessions running" >&2
+            exit 1
+            ;;
+        1)
+            selected=("${sessions[0]}")
+            ;;
+        *)
+            mapfile -t selected < <(
+                tmux list-sessions -F "#{session_name}	#{session_windows} windows#{?session_attached, (attached),}" |
+                    fzf --multi --delimiter='\t' --with-nth=1,2 --nth=1 \
+                        --prompt='kill session> ' \
+                        --header='Tab: multi-select, Enter: kill' \
+                        --preview='tmux capture-pane -ept "={1}:"' \
+                        --preview-window='right,60%' |
+                    cut -f1
+            )
+            ;;
+    esac
 fi
 
-mapfile -t sessions < <(tmux list-sessions -F '#{session_name}' 2> /dev/null || true)
-
-case ${#sessions[@]} in
-    0)
-        echo "No tmux sessions running" >&2
-        exit 1
-        ;;
-    1)
-        selected=("${sessions[0]}")
-        ;;
-    *)
-        mapfile -t selected < <(
-            tmux list-sessions -F "#{session_name}	#{session_windows} windows#{?session_attached, (attached),}" |
-                fzf --multi --delimiter='\t' --with-nth=1,2 --nth=1 \
-                    --prompt='kill session> ' \
-                    --header='Tab: multi-select, Enter: kill' \
-                    --preview='tmux capture-pane -ept "={1}:"' \
-                    --preview-window='right,60%' |
-                cut -f1
-        )
-        ;;
-esac
+# Killing the session we're running in takes this script with it, so save that one for last.
+current=""
+[[ -n ${TMUX:-} ]] && current=$(tmux display-message -p '#{session_name}')
+kill_current=0
 
 for s in "${selected[@]}"; do
+    if [[ $s == "$current" ]]; then
+        kill_current=1
+        continue
+    fi
     tmux kill-session -t "=$s" && echo "Killed session: $s"
 done
+
+if ((kill_current)); then
+    tmux kill-session -t "=$current"
+fi
