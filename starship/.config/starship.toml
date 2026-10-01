@@ -26,3 +26,9 @@ disabled = true
 
 [kubernetes]
 disabled = true
+
+# Only show Lua in actual Lua/Neovim projects, not for any stray .lua file
+[lua]
+detect_extensions = ["rockspec"]
+detect_files = [".lua-version", "init.lua", ".luarc.json", ".luarc.jsonc", "stylua.toml", ".stylua.toml"]
+detect_folders = ["lua"]
