@@ -27,6 +27,7 @@ packages=(
     zsh
 
     atuin
+    kde
 )
 
 # Completions live here; create it before stowing so stow links individual files into
@@ -73,6 +74,11 @@ if ! command -v atuin &> /dev/null; then
 fi
 
 atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
+
+# - Enable KWin scripts
+if command -v kwriteconfig6 &> /dev/null; then
+    kwriteconfig6 --file kwinrc --group Plugins --key first-window-desktopEnabled true
+fi
 
 
 # Work override

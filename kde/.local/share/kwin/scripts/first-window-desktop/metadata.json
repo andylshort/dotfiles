@@ -1,0 +1,13 @@
+{
+    "KPlugin": {
+        "Id": "first-window-desktop",
+        "Name": "First Window Desktop",
+        "Description": "Send the first window of selected apps to a dedicated virtual desktop",
+        "Authors": [{ "Name": "Andrew Lamzed-Short" }],
+        "License": "MIT",
+        "Version": "1.0"
+    },
+    "KPackageStructure": "KWin/Script",
+    "X-Plasma-API": "javascript",
+    "X-Plasma-MainScript": "code/main.js"
+}
