@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Create the tmux sessions described in a layout file, then attach to one.
+# Sessions that already exist are left alone, so this is safe to re-run.
+#
+# Usage: tmux-startup [session-to-attach]
+#
+# The layout file (default ~/.config/tmux/startup.sh, override with
+# TMUX_STARTUP_LAYOUT) is bash, using:
+#   session NAME [DIR]         start a session; its first window is "NAME"
+#   window NAME [CMD] [DIR]    add a window, running CMD in the shell if given
+#   run CMD                    run CMD in the most recent window
+#   focus                      select the most recent window when attached
+set -euo pipefail
+
+LAYOUT="${TMUX_STARTUP_LAYOUT:-${XDG_CONFIG_HOME:-$HOME/.config}/tmux/startup.sh}"
+
+first_session=""
+cur_session=""
+cur_dir=""
+cur_window=""
+skip=0
+first_window=0
+
+session() {
+    cur_session="$1"
+    cur_dir="${2:-$HOME}"
+    cur_dir="${cur_dir/#\~/$HOME}"
+    first_session="${first_session:-$cur_session}"
+    first_window=1
+    skip=0
+    if tmux has-session -t "=$cur_session" 2> /dev/null; then
+        skip=1
+        return
+    fi
+    tmux new-session -d -s "$cur_session" -n "$cur_session" -c "$cur_dir"
+    cur_window="$(tmux display-message -p -t "=$cur_session:" '#{window_id}')"
+}
+
+window() {
+    ((skip)) && return
+    local name="$1" cmd="${2:-}" dir="${3:-$cur_dir}"
+    dir="${dir/#\~/$HOME}"
+    if ((first_window)); then
+        # Reuse the window new-session made rather than leaving an empty one
+        tmux rename-window -t "$cur_window" "$name"
+        [[ "$dir" != "$cur_dir" ]] && tmux send-keys -t "$cur_window" "cd ${dir@Q}" Enter
+    else
+        cur_window="$(tmux new-window -d -P -F '#{window_id}' -t "=$cur_session:" -n "$name" -c "$dir")"
+    fi
+    first_window=0
+    [[ -n "$cmd" ]] && run "$cmd"
+    return 0
+}
+
+run() {
+    ((skip)) && return
+    tmux send-keys -t "$cur_window" "$1" Enter
+}
+
+focus() {
+    ((skip)) && return
+    tmux select-window -t "$cur_window"
+}
+
+if [[ -f "$LAYOUT" ]]; then
+    # shellcheck source=/dev/null
+    source "$LAYOUT"
+else
+    echo "No layout at $LAYOUT, starting a plain session" >&2
+fi
+
+target="${1:-${first_session:-main}}"
+tmux has-session -t "=$target" 2> /dev/null || tmux new-session -d -s "$target"
+
+if [[ -n "${TMUX:-}" ]]; then
+    tmux switch-client -t "=$target"
+else
+    exec tmux attach -t "=$target"
+fi
