@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Kill tmux sessions. With arguments, kill those sessions by name.
+# Otherwise kill the only session, or pick from several with fzf (Tab to multi-select).
+set -euo pipefail
+
+if [[ $# -gt 0 ]]; then
+    for s in "$@"; do tmux kill-session -t "=$s"; done
+    exit
+fi
+
+mapfile -t sessions < <(tmux list-sessions -F '#{session_name}' 2> /dev/null || true)
+
+case ${#sessions[@]} in
+    0)
+        echo "No tmux sessions running" >&2
+        exit 1
+        ;;
+    1)
+        selected=("${sessions[0]}")
+        ;;
+    *)
+        mapfile -t selected < <(
+            tmux list-sessions -F "#{session_name}	#{session_windows} windows#{?session_attached, (attached),}" |
+                fzf --multi --delimiter='\t' --with-nth=1,2 --nth=1 \
+                    --prompt='kill session> ' \
+                    --header='Tab: multi-select, Enter: kill' \
+                    --preview='tmux capture-pane -ept "={1}:"' \
+                    --preview-window='right,60%' |
+                cut -f1
+        )
+        ;;
+esac
+
+for s in "${selected[@]}"; do
+    tmux kill-session -t "=$s" && echo "Killed session: $s"
+done
