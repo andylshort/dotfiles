@@ -29,6 +29,11 @@ packages=(
     atuin
 )
 
+# Completions live here; create it before stowing so stow links individual files into
+# it rather than folding the whole directory into a symlink back at the repo.
+COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
+mkdir -p "$COMP_DIR"
+
 for pkg in "${packages[@]}"; do
     # Check if the folder actually exists before trying to stow it
     if [[ -d "$pkg" ]]; then
@@ -66,9 +71,6 @@ if ! command -v atuin &> /dev/null; then
     curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh |
         ATUIN_NO_MODIFY_PATH=1 sh
 fi
-
-COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
-mkdir -p "$COMP_DIR"
 
 atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 
