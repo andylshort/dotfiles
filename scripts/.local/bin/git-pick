@@ -1,0 +1,151 @@
+#!/usr/bin/env bash
+# git-pick — fuzzy-select commits that another ref has and HEAD doesn't, then cherry-pick them.
+#
+# Usage:
+#   git-pick                                     fuzzy-pick the branch first, then its commits
+#   git-pick <other-ref> [-- <git log opts>]     pick from <other-ref>, missing from HEAD
+#   git-pick <base>..<other-ref>                 explicit range (same semantics as A...B right side)
+#
+# <other-ref> is any commit-ish: a branch (local or remote), tag, or raw hash.
+#
+# Options (before the ref):
+#   -n, --dry-run     print the cherry-pick command instead of running it
+#   -x                record "(cherry picked from commit ...)" in the message
+#   -e, --edit        edit each commit message
+#   --no-commit       apply to the index/worktree without committing
+#   -s, --signoff     add a Signed-off-by line to each commit
+#   -a, --all         don't filter out commits already applied by patch-id
+#   -h, --help        show this header
+#
+# Keys in the picker: TAB multi-select, ctrl-a select all, ctrl-d toggle full diff preview,
+#                     enter confirm, esc abort.
+
+set -o errexit -o nounset -o pipefail
+
+die() {
+    printf '%s: %s\n' "${0##*/}" "$*" >&2
+    exit 1
+}
+
+usage() {
+    sed -n '2,${/^#/!q;s/^# \?//;p;}' "$0"
+}
+
+# Fuzzy-pick a branch to take commits from: locals and remotes, most recent first,
+# previewing what that branch has and HEAD doesn't.
+pick_ref() {
+    local refs line
+    # The %(if)%(symref) dance drops refs/remotes/*/HEAD, which is just a pointer at
+    # another branch already in the list.
+    refs=$(
+        git for-each-ref --sort=-committerdate refs/heads refs/remotes \
+            --format='%(if)%(symref)%(then)%(else)%(refname:short)%09%(committerdate:relative)%09%(authorname)%09%(contents:subject)%(end)' |
+            sed '/^$/d'
+    )
+    [[ -n $refs ]] || die "no branches to pick from"
+
+    line=$(
+        printf '%s\n' "$refs" |
+            fzf --ansi --no-sort --reverse --height=90% --border \
+                --header=$'select a branch to cherry-pick from · enter confirm · esc abort\n' \
+                --delimiter=$'\t' \
+                --preview='git log --color=always --no-merges --cherry-pick --right-only \
+                    --format="%h %ad %an %s" --date=short HEAD...{1}' \
+                --preview-window='right,60%,wrap'
+    ) || true
+
+    [[ -n $line ]] || die "no branch selected"
+    line=${line%%$'\n'*}
+    printf '%s' "${line%%$'\t'*}"
+}
+
+command -v fzf >/dev/null || die "fzf not found"
+git rev-parse --git-dir >/dev/null || exit 1
+
+dry_run=0
+cherry_pick_args=()
+cherry_filter=(--cherry-pick --right-only)
+
+while (($#)); do
+    case "$1" in
+        -n | --dry-run) dry_run=1 ;;
+        -a | --all) cherry_filter=(--right-only) ;;
+        -x | -e | --edit | --no-commit | --signoff | -s) cherry_pick_args+=("$1") ;;
+        -h | --help) usage; exit 0 ;;
+        --) shift; break ;;
+        -*) die "unknown option: $1" ;;
+        *) break ;;
+    esac
+    shift
+done
+
+if (($#)); then
+    target=$1
+    shift
+else
+    target=$(pick_ref)
+fi
+
+# Accept "A..B" / "A...B" as well as a bare ref (implicitly HEAD...ref).
+case "$target" in
+    *...*) range=$target ;;
+    *..*) range=${target/../...} ;;
+    *)
+        git rev-parse --verify --quiet "$target^{commit}" >/dev/null ||
+            die "not a branch, tag or commit: $target (run with no ref to pick a branch)"
+        range="HEAD...$target"
+        ;;
+esac
+
+# Oldest-first so the cherry-pick order is the natural one.
+mapfile -t commits < <(
+    git log --reverse --no-merges "${cherry_filter[@]}" \
+        --format='%h%x09%ad%x09%an%x09%s' --date=short "$range" "$@"
+)
+
+((${#commits[@]})) || {
+    echo "No commits in $range that HEAD is missing." >&2
+    exit 0
+}
+
+mapfile -t picked < <(
+    printf '%s\n' "${commits[@]}" |
+        fzf --multi --ansi --no-sort --reverse --height=90% --border \
+            --header=$'TAB select · ctrl-a all · ctrl-d full diff · enter confirm\n' \
+            --delimiter=$'\t' --with-nth=2,3,4 \
+            --preview='git show --color=always --stat {1}' \
+            --preview-window='right,60%,wrap' \
+            --bind='ctrl-a:select-all' \
+            --bind='ctrl-d:change-preview(git show --color=always {1})'
+)
+
+((${#picked[@]})) || { echo "Nothing selected." >&2; exit 1; }
+
+# fzf emits selections in input order, but don't rely on it: re-sort against the log order.
+selected=()
+for line in "${commits[@]}"; do
+    for p in "${picked[@]}"; do
+        [[ $p == "$line" ]] && selected+=("${line%%$'\t'*}") && break
+    done
+done
+
+printf 'Cherry-picking %d commit(s) onto %s:\n' \
+    "${#selected[@]}" "$(git rev-parse --abbrev-ref HEAD)" >&2
+printf '  %s\n' "${selected[@]}" >&2
+
+if ((dry_run)); then
+    printf 'git cherry-pick %s%s\n' \
+        "${cherry_pick_args[*]+${cherry_pick_args[*]} }" "${selected[*]}"
+    exit 0
+fi
+
+if [[ -n $(git status --porcelain --untracked-files=no) ]]; then
+    die "working tree is dirty — commit or stash first"
+fi
+
+git cherry-pick "${cherry_pick_args[@]+"${cherry_pick_args[@]}"}" "${selected[@]}" || {
+    echo >&2
+    echo "Cherry-pick stopped. Resolve, then:" >&2
+    echo "  git cherry-pick --continue | --skip | --abort" >&2
+    exit 1
+}

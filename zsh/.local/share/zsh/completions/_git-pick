@@ -1,0 +1,59 @@
+#compdef git-pick
+# Completion for git-pick. zsh's _git dispatches an unknown subcommand to _git-<name>,
+# so this same file also completes `git pick`.
+#
+# Refs come straight from `git for-each-ref` rather than _git's __git_* helpers, so it
+# works identically whether it was reached standalone or through `git`.
+
+# Note: git is called directly rather than through _call_program, which evals its
+# argument string — that re-parse chokes on the parens in %(refname:short).
+# The arrays are deliberately not called heads/tags: compsys keeps locals of its own
+# under those names, and `compadd -a` would pick up the wrong one.
+_git-pick_refs() {
+    local -a branchrefs tagrefs
+    branchrefs=(${(f)"$(git for-each-ref --sort=-committerdate \
+        --format='%(refname:short)' refs/heads refs/remotes 2>/dev/null)"})
+    tagrefs=(${(f)"$(git for-each-ref --sort=-creatordate \
+        --format='%(refname:short)' refs/tags 2>/dev/null)"})
+
+    # -V keeps branches in most-recent-first order instead of re-sorting them.
+    _alternative \
+        "heads:branch:compadd -V branches -a branchrefs" \
+        "tags:tag:compadd -a tagrefs"
+}
+
+_git-pick() {
+    local curcontext="$curcontext" state line ret=1
+    typeset -A opt_args
+
+    _arguments -C -S \
+        '(-n --dry-run)'{-n,--dry-run}'[print the cherry-pick command instead of running it]' \
+        '(-a --all)'{-a,--all}'[keep commits already applied by patch-id]' \
+        '-x[record "(cherry picked from commit ...)" in the message]' \
+        '(-e --edit)'{-e,--edit}'[edit each commit message]' \
+        '--no-commit[apply to the index/worktree without committing]' \
+        '(-s --signoff)'{-s,--signoff}'[add a Signed-off-by line]' \
+        '(-h --help)'{-h,--help}'[show usage]' \
+        '1:ref:->ref' \
+        '*:: :->logopts' && ret=0
+
+    case "$state" in
+        ref)
+            # Complete either side of an "A..B" / "A...B" range as well as a bare ref.
+            compset -P '*..'
+            _git-pick_refs && ret=0
+            ;;
+        logopts)
+            # Everything after the ref is forwarded verbatim to `git log`.
+            if (( $+functions[_git-log] )); then
+                _git-log && ret=0
+            else
+                _files && ret=0
+            fi
+            ;;
+    esac
+
+    return ret
+}
+
+_git-pick "$@"
