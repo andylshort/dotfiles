@@ -16,7 +16,10 @@ if command -v fzf &> /dev/null; then
     # If I type a full query, and no matches, paste as command
     export FZF_CTRL_R_OPTS="--bind enter:accept-or-print-query"
 
-    export FZF_DEFAULT_COMMAND="--with-shell='zsh -fc'"
+    # Use ripgrep (rg) as the backend for fzf to ignore .git/ and node_modules/
+    if command -v rg &> /dev/null; then
+        export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!{.git,node_modules}/*"'
+    fi
 
     export FZF_TMUX=0
 fi
