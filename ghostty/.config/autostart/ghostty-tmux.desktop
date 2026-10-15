@@ -2,6 +2,6 @@
 Type=Application
 Name=Ghostty (tmux)
 Comment=Open Ghostty attached to the tmux-startup sessions
-Exec=sh -c "exec ghostty -e \\$HOME/.local/bin/tmux-startup"
+Exec=sh -c "exec ghostty -e ~/.local/bin/tmux-startup"
 Icon=com.mitchellh.ghostty
 Terminal=false
