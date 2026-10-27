@@ -51,6 +51,17 @@ done
 
 
 # Post-linking installation steps
+# - Move shell history from $HOME to XDG_STATE_HOME (one-off; never overwrites)
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}"
+for hist in "zsh:.zsh_history" "bash:.bash_history"; do
+    shell="${hist%%:*}" old="$HOME/${hist#*:}" new="$STATE_DIR/${hist%%:*}/history"
+    if [[ -f "$old" && ! -e "$new" ]]; then
+        echo "-> Moving $old to $new"
+        mkdir -p "$STATE_DIR/$shell"
+        mv "$old" "$new"
+    fi
+done
+
 # - Install tmux plugin manager and plugins
 TPM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tpm"
 if [ ! -d "$TPM_DIR" ]; then
