@@ -20,6 +20,7 @@ packages=(
     ghostty
     git
     helix
+    nvim
     scripts
     starship
     tmux
@@ -59,6 +60,34 @@ fi
 
 # - Install vim plugin manager and plugins
 vim -es -u $HOME/.vimrc +PlugInstall +qall
+
+# - Install Neovim (>= 0.12 for vim.pack) from the official release if the system one is
+#   missing or too old. Lives in ~/.local so it works on remotes without root; if the binary
+#   can't run (e.g. ancient glibc) it's removed again and EDITOR falls back to vim
+NVIM_OK='vim.fn.has("nvim-0.12") == 1 and 0 or 1'
+if ! nvim --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
+    case "$(uname -m)" in
+        x86_64) nvim_arch=x86_64 ;;
+        aarch64 | arm64) nvim_arch=arm64 ;;
+        *) nvim_arch= ;;
+    esac
+    if [[ -n "$nvim_arch" ]]; then
+        echo "-> Installing Neovim ($nvim_arch) to ~/.local/opt"
+        mkdir -p "$HOME/.local/opt" "$HOME/.local/bin"
+        rm -rf "$HOME/.local/opt/nvim-linux-$nvim_arch"
+        curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-$nvim_arch.tar.gz" |
+            tar xz -C "$HOME/.local/opt"
+        ln -sf "$HOME/.local/opt/nvim-linux-$nvim_arch/bin/nvim" "$HOME/.local/bin/nvim"
+        if ! "$HOME/.local/bin/nvim" --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
+            echo "-> Downloaded Neovim won't run here; removing it (vim config still works)"
+            rm -rf "$HOME/.local/bin/nvim" "$HOME/.local/opt/nvim-linux-$nvim_arch"
+        fi
+    fi
+fi
+# - Install Neovim plugins (vim.pack installs anything missing on startup, at the locked revisions)
+if command -v nvim &> /dev/null || [[ -x "$HOME/.local/bin/nvim" ]]; then
+    PATH="$HOME/.local/bin:$PATH" nvim --headless +qa
+fi
 
 # - Install fzf
 ln -sf $HOME/.fzf/bin/* $HOME/.local/bin/

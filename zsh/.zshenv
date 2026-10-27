@@ -11,7 +11,11 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 export PATH="$HOME/.local/bin:$HOME/.atuin/bin:$PATH"
 
-export EDITOR="vim"
-export VISUAL="vim"
+if (( $+commands[nvim] )); then
+    export EDITOR="nvim"
+else
+    export EDITOR="vim"
+fi
+export VISUAL="$EDITOR"
 
 export BROWSER="firefox"
