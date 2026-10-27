@@ -1,3 +1,6 @@
+" Leader (must be set before any mappings; matches the Neovim config)
+let mapleader = " "
+
 " Bootstrap
 " - Automatic installation of vim-plug if not present
 let data_dir = '~/.vim'
@@ -32,6 +35,18 @@ let g:fzf_layout = { 'tmux': '-p80%,60%' }
 " General Configuration
 set encoding=utf-8
 set updatetime=300
+set ignorecase smartcase
+set splitright splitbelow
+set signcolumn=yes
+set scrolloff=5
+set list listchars=tab:»\ ,trail:·,nbsp:␣
+
+" Persistent undo
+if !isdirectory($HOME . '/.vim/undo')
+    call mkdir($HOME . '/.vim/undo', 'p')
+endif
+set undodir=~/.vim/undo//
+set undofile
 
 " UI
 set number
@@ -89,3 +104,25 @@ augroup ClipboardOSC52
     autocmd!
     autocmd TextYankPost * call OSC52Yank()
 augroup END
+
+" Keymaps
+" Mirrors the Neovim config (Helix-style space mode) as far as fzf.vim/netrw allow
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>/ :Rg<CR>
+nnoremap <leader>j :Jumps<CR>
+nnoremap <leader>g :GFiles?<CR>
+nnoremap <leader>? :Maps<CR>
+nnoremap <leader>e :Explore<CR>
+nnoremap <leader>E :Explore .<CR>
+nmap <leader>c <Plug>CommentaryLine
+xmap <leader>c <Plug>Commentary
+nnoremap <leader>w <C-w>
+
+" Helix goto-mode line motions
+noremap gh 0
+noremap gl $
+noremap gs ^
+
+" Misc Helix-isms
+nnoremap U <C-r>
