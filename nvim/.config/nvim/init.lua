@@ -197,6 +197,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+-- - Machine-specific overrides (e.g. a different clangd), loaded before servers are enabled
+for _, kind in ipairs({ "personal", "work" }) do
+    local override = (vim.env.XDG_CONFIG_HOME or vim.fn.expand("~/.config")) .. "/nvim-overrides/" .. kind .. ".lua"
+    if vim.uv.fs_stat(override) then dofile(override) end
+end
+
 -- - Enable whichever servers are installed, so the config works unchanged on bare remotes
 local servers = {
     "clangd",          -- C/C++/CUDA
