@@ -64,6 +64,7 @@ vim -es -u $HOME/.vimrc +PlugInstall +qall
 # - Install Neovim (>= 0.12 for vim.pack) from the official release if the system one is
 #   missing or too old. Lives in ~/.local so it works on remotes without root; if the binary
 #   can't run (e.g. ancient glibc) it's removed again and EDITOR falls back to vim
+export PATH="$HOME/.local/bin:$PATH"
 NVIM_OK='vim.fn.has("nvim-0.12") == 1 and 0 or 1'
 if ! nvim --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
     case "$(uname -m)" in
@@ -84,9 +85,42 @@ if ! nvim --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
         fi
     fi
 fi
+# - Install tree-sitter CLI (>= 0.26.1, for building Neovim parsers) the same way. The release
+#   binary needs a recent glibc, so on older machines Neovim just keeps regex highlighting
+ts_ok() {
+    local v
+    v=$("$1" --version 2>/dev/null | awk '{print $2}') || return 1
+    [[ -n "$v" && "$(printf '%s\n' 0.26.1 "$v" | sort -V | head -1)" == 0.26.1 ]]
+}
+if ! ts_ok tree-sitter; then
+    case "$(uname -m)" in
+        x86_64) ts_arch=x64 ;;
+        aarch64 | arm64) ts_arch=arm64 ;;
+        *) ts_arch= ;;
+    esac
+    if [[ -n "$ts_arch" ]]; then
+        echo "-> Installing tree-sitter CLI ($ts_arch) to ~/.local/bin"
+        mkdir -p "$HOME/.local/bin"
+        curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-$ts_arch.gz" |
+            gunzip > "$HOME/.local/bin/tree-sitter" && chmod +x "$HOME/.local/bin/tree-sitter"
+        if ! ts_ok "$HOME/.local/bin/tree-sitter"; then
+            echo "-> Downloaded tree-sitter won't run here; removing it (no treesitter highlighting)"
+            rm -f "$HOME/.local/bin/tree-sitter"
+        fi
+    fi
+fi
+
 # - Install Neovim plugins (vim.pack installs anything missing on startup, at the locked revisions)
-if command -v nvim &> /dev/null || [[ -x "$HOME/.local/bin/nvim" ]]; then
-    PATH="$HOME/.local/bin:$PATH" nvim --headless +qa
+#   and treesitter parsers, if a C compiler and tree-sitter are available to build them
+if command -v nvim &> /dev/null; then
+    nvim --headless +qa
+    if command -v tree-sitter &> /dev/null && command -v cc &> /dev/null; then
+        echo "-> Installing treesitter parsers"
+        nvim --headless \
+            "+lua require('nvim-treesitter').install(vim.g.ts_parsers):wait(600000)" +qa
+    else
+        echo "-> Skipping treesitter parsers (needs tree-sitter CLI and a C compiler)"
+    fi
 fi
 
 # - Install fzf

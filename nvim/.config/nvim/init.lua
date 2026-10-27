@@ -6,9 +6,19 @@ vim.g.maplocalleader = " "
 
 -- Plugins
 -- - Pinned in nvim-pack-lock.json (commit it); update with :lua vim.pack.update()
+-- - Parsers are tied to the nvim-treesitter version, so rebuild them whenever it updates
+vim.api.nvim_create_autocmd("PackChanged", {
+    callback = function(ev)
+        if ev.data.spec.name == "nvim-treesitter" and ev.data.kind == "update" then
+            if not ev.data.active then vim.cmd.packadd("nvim-treesitter") end
+            vim.cmd("TSUpdate")
+        end
+    end,
+})
 vim.pack.add({
     "https://github.com/echasnovski/mini.nvim",
     "https://github.com/neovim/nvim-lspconfig",
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     "https://github.com/christoomey/vim-tmux-navigator", -- Pairs with the tmux plugin
     { src = "https://github.com/dracula/vim", name = "dracula" },
 }, { confirm = false })
@@ -46,6 +56,32 @@ o.clipboard = "unnamedplus"
 if vim.env.SSH_TTY then
     vim.g.clipboard = "osc52"
 end
+
+-- Filetypes Neovim misdetects (*.tf is TinyFugue by default) or doesn't know
+vim.filetype.add({ extension = { tf = "terraform", j2 = "jinja" } })
+
+-- Treesitter
+-- - Parsers are compiled locally, which needs the tree-sitter CLI (>= 0.26.1) and a C compiler.
+--   install.sh installs them up front; without those tools buffers fall back to regex highlighting
+vim.g.ts_parsers = {
+    "c", "cpp", "cuda", "python", "cmake", "make", "bash", "lua",
+    "markdown", "markdown_inline", "terraform", "hcl", "yaml", "jinja", "jinja_inline",
+    "toml", "json", "diff", "gitcommit", "vim", "vimdoc", "query",
+}
+if vim.fn.executable("tree-sitter") == 1 and vim.fn.executable("cc") == 1 then
+    -- Pick up any parsers added to the list above (no-op once installed); skipped when headless
+    vim.api.nvim_create_autocmd("VimEnter", {
+        once = true,
+        callback = function()
+            if #vim.api.nvim_list_uis() > 0 then
+                require("nvim-treesitter").install(vim.g.ts_parsers)
+            end
+        end,
+    })
+end
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function(ev) pcall(vim.treesitter.start, ev.buf) end,
+})
 
 -- mini.nvim modules
 require("mini.statusline").setup() -- Shows mode (NORMAL/INSERT), git, diagnostics
@@ -168,6 +204,8 @@ local servers = {
     "bashls",          -- Shell
     "lua_ls",          -- Lua (this config)
     "neocmakelsp",     -- CMake
+    "terraformls",     -- Terraform
+    "yamlls",          -- YAML/Ansible
     "taplo",           -- TOML
     "marksman",        -- Markdown
     "fortls",          -- Fortran
