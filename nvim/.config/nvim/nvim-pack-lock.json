@@ -1,0 +1,20 @@
+{
+  "plugins": {
+    "dracula": {
+      "rev": "2cf60539da5bea64be8adf8a73a103e6e5f7f12c",
+      "src": "https://github.com/dracula/vim"
+    },
+    "mini.nvim": {
+      "rev": "ed8683521996657ce774e5eec9d2f9b1b5ecef82",
+      "src": "https://github.com/echasnovski/mini.nvim"
+    },
+    "nvim-lspconfig": {
+      "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "vim-tmux-navigator": {
+      "rev": "e41c431a0c7b7388ae7ba341f01a0d217eb3a432",
+      "src": "https://github.com/christoomey/vim-tmux-navigator"
+    }
+  }
+}

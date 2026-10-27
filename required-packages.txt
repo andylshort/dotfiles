@@ -2,6 +2,7 @@ stow
 zsh
 git
 vim
+neovim
 tmux
 ripgrep
 helix
