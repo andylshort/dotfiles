@@ -1,6 +1,7 @@
 # ${XDG_CONFIG_HOME}/zsh/conf.d/20-history.zsh
 
-HISTFILE="$HOME/.zsh_history"
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+[[ -d "${HISTFILE:h}" ]] || mkdir -p "${HISTFILE:h}"
 HISTSIZE=1000000
 SAVEHIST=1000000
 setopt SHARE_HISTORY          # Share history across sessions immediately

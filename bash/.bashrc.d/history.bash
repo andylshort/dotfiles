@@ -2,7 +2,8 @@
 # History
 
 # - History file location
-export HISTFILE="$HOME/.bash_history"
+export HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+[[ -d "${HISTFILE%/*}" ]] || mkdir -p "${HISTFILE%/*}"
 
 # - Add time and date information toeach command
 export HISTTIMEFORMAT='%F %T - '

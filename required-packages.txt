@@ -2,6 +2,8 @@ stow
 zsh
 git
 vim
+neovim
+tree-sitter-cli
 tmux
 ripgrep
 helix

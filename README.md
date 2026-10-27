@@ -16,6 +16,7 @@ These are automatically loaded by the configuration files of the associated prog
 
 - `~/.bashrc.{personal,work}`
 - `~/.gitconfig.{personal,work}`
+- `~/.config/nvim-overrides/{personal,work}.lua`
 - `~/.tmux.conf.{personal,work}`
 - `~/.zshrc.{personal,work}`
 
