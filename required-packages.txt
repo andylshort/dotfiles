@@ -6,7 +6,6 @@ neovim
 tree-sitter-cli
 tmux
 ripgrep
-helix
 tree
 atuin
 entr

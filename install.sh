@@ -19,7 +19,6 @@ packages=(
     bash
     ghostty
     git
-    helix
     nvim
     scripts
     starship

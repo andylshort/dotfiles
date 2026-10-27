@@ -162,7 +162,7 @@ map("n", "<Esc>", "<Cmd>nohlsearch<CR><Esc>")
 map("i", "<Tab>", function() return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>" end, { expr = true })
 map("i", "<S-Tab>", function() return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>" end, { expr = true })
 
--- - lazygit in a floating terminal, matching C-g in the Helix config
+-- - lazygit in a floating terminal (carried over from the old Helix config)
 if vim.fn.executable("lazygit") == 1 then
     map("n", "<C-g>", function()
         vim.cmd("silent! wall")
