@@ -68,6 +68,31 @@ if ! command -v starship &> /dev/null; then
     curl -sS https://starship.rs/install.sh | sh -s -- -y
 fi
 
+# - Install delta (git pager). Optional: the git config falls back to less if it's missing
+if ! command -v delta &> /dev/null; then
+    SUDO=()
+    if [[ $EUID -ne 0 ]] && command -v sudo &> /dev/null; then
+        SUDO=(sudo)
+    fi
+
+    if command -v dnf &> /dev/null; then
+        delta_install=("${SUDO[@]}" dnf install -y git-delta)
+    elif command -v apt-get &> /dev/null; then
+        delta_install=("${SUDO[@]}" apt-get install -y git-delta)
+    elif command -v zypper &> /dev/null; then
+        delta_install=("${SUDO[@]}" zypper install -y git-delta)
+    else
+        delta_install=()
+    fi
+
+    if (( ${#delta_install[@]} )); then
+        echo "-> Installing delta: ${delta_install[*]}"
+        "${delta_install[@]}" || echo "-> Failed to install delta; git will fall back to less"
+    else
+        echo "-> No supported package manager found for delta; git will fall back to less"
+    fi
+fi
+
 # - Install atuin and shell completions
 export PATH="$HOME/.atuin/bin:$PATH"
 if ! command -v atuin &> /dev/null; then

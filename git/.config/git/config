@@ -6,8 +6,19 @@
 	# Detect identation when tabs instead of spaces
 	whitespace = blank-at-eol,space-before-tab,tab-in-indent,trailing-space
 
+    # Fall back to less (git's default) if delta isn't installed
+    pager = "if command -v delta >/dev/null 2>&1; then exec delta; else exec less; fi"
+
 [init]
 	defaultBranch = main
+
+[interactive]
+    # diffFilter must preserve lines 1:1, so fall back to passing the diff through untouched
+    diffFilter = "if command -v delta >/dev/null 2>&1; then exec delta --color-only; else exec cat; fi"
+
+[delta]
+    navigate = true
+    dark = true
 
 [commit]
 	verbose = true
@@ -23,7 +34,7 @@
 
 [merge]
 	renormalize = true
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [diff]
 	algorithm = patience
