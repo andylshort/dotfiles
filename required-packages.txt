@@ -1,10 +1,14 @@
+# Required
 stow
-zsh
 git
-vim
+zsh
+
+# Optional: used when installed, skipped otherwise
 neovim
 tree-sitter-cli
 tmux
+fzf
 ripgrep
-tree
 atuin
+git-delta
+tree

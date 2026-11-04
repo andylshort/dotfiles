@@ -3,7 +3,6 @@
 
 cd "$(dirname "$0")" || exit
 
-# TODO: Check all prerequisites, or have gated install/config
 if ! command -v stow &> /dev/null; then
     echo "GNU Stow not installed. Please install it and try again."
     exit 1
@@ -15,7 +14,6 @@ packages=(
     git
     nvim
     scripts
-    starship
     tmux
     vim
     zsh
@@ -61,127 +59,42 @@ for hist in "zsh:.zsh_history" "bash:.bash_history"; do
     fi
 done
 
-# - tmux and Vim no longer use plugins: remove TPM's clones (~/.config/tmux may be stowed back
-#   into this repo, where they'd otherwise show up as untracked)
-TMUX_PLUGINS="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins"
-if [[ -d "$TMUX_PLUGINS/tpm" ]]; then
-    echo "-> Removing tmux plugins (no longer used)"
-    rm -rf "$TMUX_PLUGINS"
-fi
-
-# - Install Neovim (>= 0.12 for vim.pack) from the official release if the system one is
-#   missing or too old. Lives in ~/.local so it works on remotes without root; if the binary
-#   can't run (e.g. ancient glibc) it's removed again and EDITOR falls back to vim
-export PATH="$HOME/.local/bin:$PATH"
-NVIM_OK='vim.fn.has("nvim-0.12") == 1 and 0 or 1'
-if ! nvim --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
-    case "$(uname -m)" in
-        x86_64) nvim_arch=x86_64 ;;
-        aarch64 | arm64) nvim_arch=arm64 ;;
-        *) nvim_arch= ;;
-    esac
-    if [[ -n "$nvim_arch" ]]; then
-        echo "-> Installing Neovim ($nvim_arch) to ~/.local/opt"
-        mkdir -p "$HOME/.local/opt" "$HOME/.local/bin"
-        rm -rf "$HOME/.local/opt/nvim-linux-$nvim_arch"
-        curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-$nvim_arch.tar.gz" |
-            tar xz -C "$HOME/.local/opt"
-        ln -sf "$HOME/.local/opt/nvim-linux-$nvim_arch/bin/nvim" "$HOME/.local/bin/nvim"
-        if ! "$HOME/.local/bin/nvim" --headless -u NONE "+lua os.exit($NVIM_OK)" &> /dev/null; then
-            echo "-> Downloaded Neovim won't run here; removing it (vim config still works)"
-            rm -rf "$HOME/.local/bin/nvim" "$HOME/.local/opt/nvim-linux-$nvim_arch"
-        fi
+# - Remove things this repo no longer uses: TPM's tmux plugins (~/.config/tmux may be stowed
+#   back into this repo, where they'd show up as untracked) and zinit
+for old in "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins" "${XDG_DATA_HOME:-$HOME/.local/share}/zinit"; do
+    if [[ -d "$old" ]]; then
+        echo "-> Removing $old (no longer used)"
+        rm -rf "$old"
     fi
-fi
-# - Install tree-sitter CLI (>= 0.26.1, for building Neovim parsers) the same way. The release
-#   binary needs a recent glibc, so on older machines Neovim just keeps regex highlighting
-ts_ok() {
-    local v
-    v=$("$1" --version 2>/dev/null | awk '{print $2}') || return 1
-    [[ -n "$v" && "$(printf '%s\n' 0.26.1 "$v" | sort -V | head -1)" == 0.26.1 ]]
-}
-if ! ts_ok tree-sitter; then
-    case "$(uname -m)" in
-        x86_64) ts_arch=x64 ;;
-        aarch64 | arm64) ts_arch=arm64 ;;
-        *) ts_arch= ;;
-    esac
-    if [[ -n "$ts_arch" ]]; then
-        echo "-> Installing tree-sitter CLI ($ts_arch) to ~/.local/bin"
-        mkdir -p "$HOME/.local/bin"
-        curl -fsSL "https://github.com/tree-sitter/tree-sitter/releases/latest/download/tree-sitter-linux-$ts_arch.gz" |
-            gunzip > "$HOME/.local/bin/tree-sitter" && chmod +x "$HOME/.local/bin/tree-sitter"
-        if ! ts_ok "$HOME/.local/bin/tree-sitter"; then
-            echo "-> Downloaded tree-sitter won't run here; removing it (no treesitter highlighting)"
-            rm -f "$HOME/.local/bin/tree-sitter"
-        fi
-    fi
-fi
+done
 
-# - Install Neovim plugins (vim.pack installs anything missing on startup, at the locked revisions)
-#   and treesitter parsers, if a C compiler and tree-sitter are available to build them
-if command -v nvim &> /dev/null; then
+# Optional extras. Nothing is downloaded as a binary: tools come from the system's packages
+# (see required-packages.txt), and the configs work without any of them
+# - zsh plugins: plain git clones, sourced by .zshrc if present
+PLUGIN_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/plugins"
+for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+    if [[ -d "$PLUGIN_DIR/$plugin" ]]; then
+        git -C "$PLUGIN_DIR/$plugin" pull -q --ff-only || echo "-> Couldn't update $plugin"
+    else
+        git clone -q --depth 1 "https://github.com/zsh-users/$plugin" "$PLUGIN_DIR/$plugin" ||
+            echo "-> Couldn't clone $plugin; zsh works without it"
+    fi
+done
+
+# - Neovim (>= 0.12) plugins at their locked revisions, and treesitter parsers if there's a
+#   tree-sitter CLI and C compiler to build them (otherwise Neovim uses regex highlighting)
+if nvim --headless -u NONE '+lua os.exit(vim.fn.has("nvim-0.12") == 1 and 0 or 1)' &> /dev/null; then
     nvim --headless +qa
     if command -v tree-sitter &> /dev/null && command -v cc &> /dev/null; then
         echo "-> Installing treesitter parsers"
-        nvim --headless \
-            "+lua require('nvim-treesitter').install(vim.g.ts_parsers):wait(600000)" +qa
-    else
-        echo "-> Skipping treesitter parsers (needs tree-sitter CLI and a C compiler)"
+        nvim --headless "+lua require('nvim-treesitter').install(vim.g.ts_parsers):wait(600000)" +qa
     fi
 fi
 
-# - Install fzf (>= 0.48, for `fzf --zsh`) to ~/.fzf if there isn't a recent enough one. Its
-#   installer fetches the right prebuilt binary for the machine
-if ! fzf --zsh &> /dev/null; then
-    echo "-> Installing fzf to ~/.fzf"
-    if [[ -d "$HOME/.fzf/.git" ]]; then
-        git -C "$HOME/.fzf" pull -q --ff-only
-    else
-        git clone -q --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
-    fi
-    "$HOME/.fzf/install" --bin && ln -sf "$HOME/.fzf/bin/fzf" "$HOME/.local/bin/fzf"
+# - atuin completions
+if command -v atuin &> /dev/null; then
+    atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 fi
-
-# - Install starship prompt
-if ! command -v starship &> /dev/null; then
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
-fi
-
-# - Install delta (git pager). Optional: the git config falls back to less if it's missing
-if ! command -v delta &> /dev/null; then
-    SUDO=()
-    if [[ $EUID -ne 0 ]] && command -v sudo &> /dev/null; then
-        SUDO=(sudo)
-    fi
-
-    if command -v dnf &> /dev/null; then
-        delta_install=("${SUDO[@]}" dnf install -y git-delta)
-    elif command -v apt-get &> /dev/null; then
-        delta_install=("${SUDO[@]}" apt-get install -y git-delta)
-    elif command -v zypper &> /dev/null; then
-        delta_install=("${SUDO[@]}" zypper install -y git-delta)
-    else
-        delta_install=()
-    fi
-
-    if (( ${#delta_install[@]} )); then
-        echo "-> Installing delta: ${delta_install[*]}"
-        "${delta_install[@]}" || echo "-> Failed to install delta; git will fall back to less"
-    else
-        echo "-> No supported package manager found for delta; git will fall back to less"
-    fi
-fi
-
-# - Install atuin and shell completions
-export PATH="$HOME/.atuin/bin:$PATH"
-if ! command -v atuin &> /dev/null; then
-    # Use the release installer directly: setup.atuin.sh appends init lines to .zshrc/.bashrc
-    curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh |
-        ATUIN_NO_MODIFY_PATH=1 sh
-fi
-
-atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 
 # - Enable KWin scripts
 if command -v kwriteconfig6 &> /dev/null; then
