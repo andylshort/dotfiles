@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
+# Copy the dotfiles to remote machines and run install.sh there.
+# Usage: sync-dotfiles-to HOST...
+# HOST is anything ssh accepts: an alias, host or user@host. The username comes from
+# there or from ~/.ssh/config, like plain ssh.
 set -eu
-MACHINE="${1:?You need to specify a machine to connect to}"
+(($#)) || { echo "Usage: ${0##*/} HOST..." >&2; exit 1; }
 
 DOTFILES="$HOME/dotfiles"
 
-rsync -azv --delete --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "andyls@$MACHINE:~/dotfiles"
-ssh -Y -t andyls@"$MACHINE" 'cd ~/dotfiles && bash install.sh'
+for host in "$@"; do
+    echo "-> $host"
+    rsync -az --delete --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "$host:dotfiles"
+    ssh -t "$host" 'cd ~/dotfiles && bash install.sh'
+done
