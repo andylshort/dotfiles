@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Install Ghostty's terminfo entry system-wide on remote machines (asks for sudo there).
+# Ghostty's ssh-terminfo integration only puts it in ~/.terminfo, which root doesn't read,
+# so `sudo <anything full-screen>` fails with "Error opening terminal: xterm-ghostty".
+# Usage: ghostty-terminfo HOST...
+set -euo pipefail
+(($#)) || { echo "Usage: ${0##*/} HOST..." >&2; exit 1; }
+
+entry="$(infocmp -x xterm-ghostty)"
+for host in "$@"; do
+    echo "-> $host"
+    tmp="$(ssh "$host" 'f=$(mktemp) && cat > "$f" && echo "$f"' <<< "$entry")"
+    ssh -t "$host" "sudo tic -x '$tmp'; rm -f '$tmp'"
+done
