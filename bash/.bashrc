@@ -1,7 +1,7 @@
 # ~/.bashrc
 # shellcheck disable=SC1090,SC1091
 # Self-contained so it works on any machine on its own: `scp ~/.bashrc host:`.
-# Uses whatever's installed (nvim/vim, fzf, git, starship) and skips the rest.
+# Uses whatever's installed (nvim/vim, fzf, bash-completion) and skips the rest.
 # Per-machine additions go in ~/.bashrc.{work,personal,local}.
 
 [[ $- == *i* ]] || return
@@ -50,20 +50,30 @@ mkcd() { mkdir -p -- "$1" && cd -- "$1" || return; }
     . /usr/share/bash-completion/bash_completion
 command -v fzf > /dev/null && eval "$(fzf --bash 2> /dev/null)"
 
-# Prompt: starship if installed, otherwise user@host:dir (branch) and a $ that turns
-# red after a failed command
+# Prompt, as in zsh:  [user@host] dir (branch)
+#                     $            <- red after a failed command
+# The branch is read from .git/HEAD rather than by running git, so it's instant anywhere
 __prompt() {
-    local status=$? branch colour=32
-    ((status)) && colour=31
-    branch=$(git symbolic-ref -q --short HEAD 2> /dev/null || git rev-parse -q --short HEAD 2> /dev/null)
-    PS1="\[\e[1;34m\]\u@\h\[\e[0m\]:\[\e[1;36m\]\w\[\e[0m\]${branch:+ \[\e[35m\]($branch)\[\e[0m\]}\n\[\e[1;${colour}m\]\\\$\[\e[0m\] "
+    local status=$? d=$PWD gitdir head branch
+    while :; do
+        if [[ -f $d/.git/HEAD ]]; then gitdir=$d/.git; break; fi
+        if [[ -f $d/.git ]]; then
+            read -r gitdir < "$d/.git"; gitdir=${gitdir#gitdir: }
+            [[ $gitdir == /* ]] || gitdir=$d/$gitdir
+            break
+        fi
+        [[ -z $d || $d == / ]] && break
+        d=${d%/*}
+    done
+    [[ -n $gitdir ]] && read -r head < "$gitdir/HEAD" 2> /dev/null
+    if [[ $head == 'ref: '* ]]; then branch=${head#ref: refs/heads/}; else branch=${head:0:7}; fi
+    PS1=
+    [[ -n $SSH_CONNECTION ]] && PS1+='\[\e[1;34m\]\u@\h\[\e[0m\] '
+    PS1+='\[\e[1;36m\]\w\[\e[0m\]'
+    [[ -n $branch ]] && PS1+=" \[\e[35m\]($branch)\[\e[0m\]"
+    PS1+="\n\[\e[1;$((status ? 31 : 32))m\]\\\$\[\e[0m\] "
 }
-if command -v starship > /dev/null; then
-    PROMPT_COMMAND="history -a"
-    eval "$(starship init bash)"
-else
-    PROMPT_COMMAND="__prompt; history -a"
-fi
+PROMPT_COMMAND="__prompt; history -a"
 
 for f in "$HOME"/.bashrc.{work,personal,local}; do
     [[ -f $f ]] && . "$f"
