@@ -50,7 +50,7 @@ mkcd() { mkdir -p -- "$1" && cd -- "$1" || return; }
     . /usr/share/bash-completion/bash_completion
 command -v fzf > /dev/null && eval "$(fzf --bash 2> /dev/null)"
 
-# Prompt, as in zsh:  [user@host] dir (branch)
+# Prompt, as in zsh:  [ user@host ] dir (branch)   <- orange host badge over SSH
 #                     $            <- red after a failed command
 # The branch is read from .git/HEAD rather than by running git, so it's instant anywhere
 __prompt() {
@@ -68,7 +68,8 @@ __prompt() {
     [[ -n $gitdir ]] && read -r head < "$gitdir/HEAD" 2> /dev/null
     if [[ $head == 'ref: '* ]]; then branch=${head#ref: refs/heads/}; else branch=${head:0:7}; fi
     PS1=
-    [[ -n $SSH_CONNECTION ]] && PS1+='\[\e[1;34m\]\u@\h\[\e[0m\] '
+    # Over SSH: user@host on an orange badge, matching the remote tmux bar
+    [[ -n $SSH_CONNECTION ]] && PS1+='\[\e[1;30;48;5;215m\] \u@\h \[\e[0m\] '
     PS1+='\[\e[1;36m\]\w\[\e[0m\]'
     [[ -n $branch ]] && PS1+=" \[\e[35m\]($branch)\[\e[0m\]"
     PS1+="\n\[\e[1;$((status ? 31 : 32))m\]\\\$\[\e[0m\] "

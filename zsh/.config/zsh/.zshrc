@@ -73,7 +73,7 @@ for p in zsh-autosuggestions zsh-syntax-highlighting; do
 done
 unset p
 
-# Prompt:  [user@host] dir (branch) [took 12s]
+# Prompt:  [ user@host ] dir (branch) [took 12s]   <- orange host badge over SSH
 #          $            <- red after a failed command
 # The branch is read straight from .git/HEAD rather than by running git, so the prompt
 # stays instant in huge repos and on slow filesystems
@@ -101,7 +101,8 @@ _prompt_precmd() {
     _prompt_start=0
     (( _prompt_shown++ )) && print # Blank line between commands
     PROMPT=
-    [[ -n $SSH_CONNECTION ]] && PROMPT+='%B%F{blue}%n@%m%f%b '
+    # Over SSH: user@host on an orange badge, matching the remote tmux bar
+    [[ -n $SSH_CONNECTION ]] && PROMPT+='%B%K{215}%F{black} %n@%m %f%k%b '
     PROMPT+='%B%F{cyan}%~%f%b'
     _prompt_branch
     [[ -n $REPLY ]] && PROMPT+=" %F{magenta}(${REPLY//\%/%%})%f"
