@@ -5,3 +5,6 @@
 
 .zcompdump
 
+
+# zsh plugins cloned by install.sh, if ~/.local/share/zsh is stowed back into this repo
+zsh/.local/share/zsh/plugins/
