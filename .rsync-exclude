@@ -5,5 +5,4 @@ work/*
 .gitignore
 .rsync-exclude
 README.md
-tmux/.config/tmux/plugins/
 .zcompdump*

@@ -5,5 +5,3 @@
 
 .zcompdump
 
-# TPM and plugins it installs (~/.config/tmux is stowed back into this repo)
-tmux/.config/tmux/plugins/
