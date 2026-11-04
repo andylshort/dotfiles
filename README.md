@@ -14,8 +14,6 @@ See `required-packages.txt`.
 
 `bash/.bashrc` and `vim/.vimrc` are single, plugin-free files that work on their own, using whatever the machine has. Copy just those: `scp bash/.bashrc vim/.vimrc HOST:`.
 
-On hosts where you use `sudo`, run `ghostty-terminfo HOST` once so root can use Ghostty's terminfo.
-
 ## Files You Can to Provide
 
 These are automatically loaded by the configuration files of the associated programs to tailor the experience to you and your environment (work or personal):

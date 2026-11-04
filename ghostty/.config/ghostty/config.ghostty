@@ -4,11 +4,10 @@ language = en
 command = /usr/bin/zsh
 
 # Automatically inject Zsh shell integration
-# - ssh-terminfo copies Ghostty's terminfo to ~/.terminfo on SSH hosts (ssh-env falls back to
-#   xterm-256color if that fails). Root can't see ~/.terminfo, so on hosts where you use sudo,
-#   run `ghostty-terminfo HOST` once to install it system-wide
+# - ssh-env: SSH sessions get TERM=xterm-256color, which every host (and sudo) understands,
+#   instead of trying to install Ghostty's terminfo on each host first
 shell-integration = zsh
-shell-integration-features = sudo,ssh-terminfo,ssh-env
+shell-integration-features = ssh-env
 
 theme = "Dracula"
 window-theme = dark
