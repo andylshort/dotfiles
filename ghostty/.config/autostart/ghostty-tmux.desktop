@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Ghostty (tmux)
-Comment=Open Ghostty attached to the tmux-startup sessions
-Exec=sh -c "exec ghostty -e ~/.local/bin/tmux-startup"
+Comment=Open Ghostty attached to the "dev" tmux session
+Exec=ghostty -e tmux new-session -A -s dev
 Icon=com.mitchellh.ghostty
 Terminal=false
