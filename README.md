@@ -22,6 +22,13 @@ These are automatically loaded by the configuration files of the associated prog
 
 _(You can just use `.local` files instead, but `.work` or `.personal` is a more meaningful name, semantically-speaking.)_
 
+## Claude Skills
+
+- General-purpose: `claude/.claude/skills/<name>/SKILL.md`, stowed into `~/.claude/skills`
+- Work-specific: `work/claude/skills/<name>/SKILL.md`, linked in by `work/install.sh`
+
+Both are also linked into the `claude-box` sandbox user's `~/.claude/skills`, read-only.
+
 ## TODO
 - [ ] Automate package installation
 - [x] Integrate `fzf` into install and workflow

@@ -1,5 +1,5 @@
--- Minimal Neovim config (0.12+): mini.nvim + built-in LSP, with Helix-style bindings
--- Leader keys mirror Helix's space mode; the same mappings exist in ~/.vimrc as a fallback
+-- Minimal Neovim config (0.12+): mini.nvim + built-in LSP, keeping stock Vim keybindings
+-- The same leader mappings exist in ~/.vimrc as a fallback
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -58,15 +58,17 @@ if vim.env.SSH_TTY then
 end
 
 -- Filetypes Neovim misdetects (*.tf is TinyFugue by default) or doesn't know
-vim.filetype.add({ extension = { tf = "terraform", j2 = "jinja" } })
-
+vim.filetype.add({
+    extension = { tf = "terraform", j2 = "jinja" },
+    pattern = { [".*/gitconfig%..*"] = "gitconfig" },
+})
 -- Treesitter
 -- - Parsers are compiled locally, which needs the tree-sitter CLI (>= 0.26.1) and a C compiler.
 --   install.sh installs them up front; without those tools buffers fall back to regex highlighting
 vim.g.ts_parsers = {
     "c", "cpp", "cuda", "python", "cmake", "make", "bash", "lua",
     "markdown", "markdown_inline", "terraform", "hcl", "yaml", "jinja", "jinja_inline",
-    "toml", "json", "diff", "gitcommit", "vim", "vimdoc", "query",
+    "toml", "json", "diff", "gitcommit", "vim", "vimdoc", "query", "git_config",
 }
 if vim.fn.executable("tree-sitter") == 1 and vim.fn.executable("cc") == 1 then
     -- Pick up any parsers added to the list above (no-op once installed); skipped when headless
@@ -88,44 +90,38 @@ require("mini.statusline").setup() -- Shows mode (NORMAL/INSERT), git, diagnosti
 require("mini.diff").setup()       -- Git gutter, ]h/[h to jump hunks
 require("mini.pairs").setup()      -- Auto-close brackets/quotes
 require("mini.ai").setup()         -- Better text objects: a/i + f(unction), a(rgument), q(uote)...
-require("mini.surround").setup()   -- sa/sd/sr: add/delete/replace surroundings (Helix ms/md/mr)
+-- - Surroundings with vim-surround's ys/ds/cs (mini's default sa/sd/sr would shadow Vim's s)
+require("mini.surround").setup({
+    mappings = {
+        add = "ys", delete = "ds", replace = "cs",
+        find = "", find_left = "", highlight = "", update_n_lines = "",
+        suffix_last = "", suffix_next = "",
+    },
+    search_method = "cover_or_next",
+})
+vim.keymap.del("x", "ys")
+vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add("visual")<CR>]], { silent = true, desc = "Surround selection" })
+vim.keymap.set("n", "yss", "ys_", { remap = true, desc = "Surround line" })
 require("mini.extra").setup()
 require("mini.pick").setup()
 require("mini.files").setup()
 vim.ui.select = MiniPick.ui_select -- Code actions etc. go through the picker
 
--- - Which-key style popups (Helix shows these for every prefix)
-local miniclue = require("mini.clue")
-miniclue.setup({
+-- - Which-key style popup for leader mappings only; other prefixes behave as in stock Vim
+require("mini.clue").setup({
     triggers = {
         { mode = "n", keys = "<Leader>" },
         { mode = "x", keys = "<Leader>" },
-        { mode = "n", keys = "g" },
-        { mode = "x", keys = "g" },
-        { mode = "n", keys = "[" },
-        { mode = "n", keys = "]" },
-        { mode = "n", keys = "z" },
-        { mode = "n", keys = "<C-w>" },
-        { mode = "n", keys = "'" },
-        { mode = "n", keys = '"' },
-        { mode = "i", keys = "<C-r>" },
-    },
-    clues = {
-        miniclue.gen_clues.builtin_completion(),
-        miniclue.gen_clues.g(),
-        miniclue.gen_clues.marks(),
-        miniclue.gen_clues.registers(),
-        miniclue.gen_clues.windows(),
-        miniclue.gen_clues.z(),
     },
     window = { delay = 300 },
 })
+
 
 -- Keymaps
 local map = vim.keymap.set
 local pick, extra = MiniPick.builtin, MiniExtra.pickers
 
--- - Space mode (follows Helix's layout where Neovim has an equivalent)
+-- - Leader mappings: pickers, LSP and editing helpers
 map("n", "<leader>f", function() pick.files() end, { desc = "Find file" })
 map("n", "<leader>b", function() pick.buffers() end, { desc = "Buffers" })
 map("n", "<leader>/", function() pick.grep_live() end, { desc = "Search" })
@@ -145,24 +141,18 @@ map({ "n", "x" }, "<leader>a", vim.lsp.buf.code_action, { desc = "Code action" }
 map({ "n", "x" }, "<leader>=", function() vim.lsp.buf.format() end, { desc = "Format" })
 map("n", "<leader>c", "gcc", { remap = true, desc = "Toggle comment" })
 map("x", "<leader>c", "gc", { remap = true, desc = "Toggle comment" })
-map("n", "<leader>w", "<C-w>", { remap = true, desc = "+Window" })
 
--- - Goto mode: Helix's gh/gl/gs line motions (Vim's gh/gs are rarely-used select/sleep)
-map({ "n", "x", "o" }, "gh", "0", { desc = "Goto line start" })
-map({ "n", "x", "o" }, "gl", "$", { desc = "Goto line end" })
-map({ "n", "x", "o" }, "gs", "^", { desc = "Goto first non-blank" })
 -- - LSP gotos; Neovim already provides grr/gri/grt/grn/gra and ]d/[d
 map("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto declaration" })
 map("n", "gy", vim.lsp.buf.type_definition, { desc = "Goto type definition" })
 
--- - Misc Helix-isms
-map("n", "U", "<C-r>", { desc = "Redo" })
+-- - Misc
 map("n", "<Esc>", "<Cmd>nohlsearch<CR><Esc>")
 map("i", "<Tab>", function() return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>" end, { expr = true })
 map("i", "<S-Tab>", function() return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>" end, { expr = true })
 
--- - lazygit in a floating terminal (carried over from the old Helix config)
+-- - lazygit in a floating terminal
 if vim.fn.executable("lazygit") == 1 then
     map("n", "<C-g>", function()
         vim.cmd("silent! wall")
@@ -184,7 +174,7 @@ if vim.fn.executable("lazygit") == 1 then
 end
 
 -- LSP
--- - Inline diagnostics like Helix
+-- - Inline diagnostics
 vim.diagnostic.config({ virtual_text = true, severity_sort = true })
 
 -- - Auto-completion as you type

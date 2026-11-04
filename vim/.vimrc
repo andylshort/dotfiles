@@ -106,7 +106,7 @@ augroup ClipboardOSC52
 augroup END
 
 " Keymaps
-" Mirrors the Neovim config (Helix-style space mode) as far as fzf.vim/netrw allow
+" Mirrors the Neovim config's leader mappings as far as fzf.vim/netrw allow
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>/ :Rg<CR>
@@ -117,12 +117,3 @@ nnoremap <leader>e :Explore<CR>
 nnoremap <leader>E :Explore .<CR>
 nmap <leader>c <Plug>CommentaryLine
 xmap <leader>c <Plug>Commentary
-nnoremap <leader>w <C-w>
-
-" Helix goto-mode line motions
-noremap gh 0
-noremap gl $
-noremap gs ^
-
-" Misc Helix-isms
-nnoremap U <C-r>
