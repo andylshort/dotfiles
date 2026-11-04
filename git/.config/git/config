@@ -1,11 +1,4 @@
 [core]
-	# Automatically resolve linux-to-windows issues
-	autocrlf = false
-	trustctime = false
-
-	# Detect identation when tabs instead of spaces
-	whitespace = blank-at-eol,space-before-tab,tab-in-indent,trailing-space
-
     # Fall back to less (git's default) if delta isn't installed
     pager = "if command -v delta >/dev/null 2>&1; then exec delta; else exec less; fi"
 
@@ -33,7 +26,6 @@
 	rebase = true
 
 [merge]
-	renormalize = true
 	conflictstyle = zdiff3
 
 [diff]
