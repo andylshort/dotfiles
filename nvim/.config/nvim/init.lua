@@ -1,6 +1,12 @@
 -- Minimal Neovim config (0.12+): mini.nvim + built-in LSP, keeping stock Vim keybindings
 -- The same leader mappings exist in ~/.vimrc as a fallback
 
+-- Older Neovims (e.g. a distro package on a remote) get the plugin-free ~/.vimrc instead
+if vim.fn.has("nvim-0.12") == 0 then
+    vim.cmd("silent! source ~/.vimrc")
+    return
+end
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 

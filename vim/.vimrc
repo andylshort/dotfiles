@@ -1,6 +1,7 @@
 " ~/.vimrc
 " Self-contained and plugin-free so it works on any machine on its own: `scp ~/.vimrc host:`.
-" Neovim is the main editor; this keeps Vim usable (and close to it) where Neovim isn't installed.
+" Neovim is the main editor; this keeps Vim usable (and close to it) where Neovim isn't installed,
+" and is what Neovim < 0.12 loads too.
 
 set nocompatible
 filetype plugin indent on
@@ -20,11 +21,14 @@ if executable('rg')
     set grepprg=rg\ --vimgrep\ --smart-case grepformat=%f:%l:%c:%m
 endif
 
-" Persistent undo
+" Persistent undo (Neovim, when it falls back to this file, keeps its own undodir: the
+" file formats differ)
 if has('persistent_undo')
-    let s:undo = expand('~/.vim/undo')
-    if !isdirectory(s:undo) | call mkdir(s:undo, 'p') | endif
-    let &undodir = s:undo
+    if !has('nvim')
+        let s:undo = expand('~/.vim/undo')
+        if !isdirectory(s:undo) | call mkdir(s:undo, 'p') | endif
+        let &undodir = s:undo
+    endif
     set undofile
 endif
 
@@ -74,7 +78,7 @@ nnoremap <leader>/ :silent grep!<Space>""<Left>
 nnoremap <leader>e :Explore<CR>
 nnoremap <leader>E :Explore .<CR>
 nnoremap <silent> <leader>h :nohlsearch<CR>
-silent! packadd comment " Vim 9.1+: gc/gcc commenting
+if !has('nvim') | silent! packadd comment | endif " gc/gcc commenting (Vim 9.1+; built into Neovim)
 if !empty(maparg('gc', 'n'))
     nmap <leader>c gcc
     xmap <leader>c gc
