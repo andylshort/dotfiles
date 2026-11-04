@@ -13,10 +13,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit ice wait'0' lucid
 zinit light 'zsh-users/zsh-autosuggestions'
 
-# History Substring Search
-zinit load 'zsh-users/zsh-history-substring-search'
-zinit ice wait atload'_history_substring_search_config'
-
 # More ZSH Completions
 zinit ice wait'0' lucid
 zinit light 'zsh-users/zsh-completions'

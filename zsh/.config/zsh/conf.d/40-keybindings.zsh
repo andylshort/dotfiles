@@ -1,4 +1,4 @@
-# ${XDG_CONFIG_HOME}/zsh/conf.d/40-history.zsh
+# ${XDG_CONFIG_HOME}/zsh/conf.d/40-keybindings.zsh
 
 # emacs-style keybindings
 bindkey -e
@@ -19,14 +19,13 @@ key[Delete]=${terminfo[kdch1]}
 [[ -n "${key[Insert]}" ]]  && bindkey "${key[Insert]}" overwrite-mode
 [[ -n "${key[Delete]}" ]]  && bindkey "${key[Delete]}" delete-char
 
-# Set ANSI fallbacks
+# Fallbacks for when terminfo's sequences don't match what the terminal sends
+# (e.g. Home/End under tmux). Ctrl-A/Ctrl-E/Backspace already come with `bindkey -e`
 # - Home and End
 bindkey '^[[H' beginning-of-line
 bindkey '^[[1~' beginning-of-line
-bindkey '^A' beginning-of-line
 bindkey '^[[F' end-of-line
 bindkey '^[[4~' end-of-line
-bindkey '^E' end-of-line
 
 # - Per word
 bindkey "^[[1;3C" forward-word
@@ -36,7 +35,6 @@ bindkey "^[[1;5D" backward-word
 
 # - Delete & Backspace 
 bindkey '^[[3~' delete-char          # Standard Delete
-bindkey '^?'    backward-delete-char # Backspace
 bindkey "^[[3;3~" delete-word
 
 # - Shift + Modifiers 

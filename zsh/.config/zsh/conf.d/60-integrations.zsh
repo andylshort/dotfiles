@@ -1,25 +1,14 @@
 # ${XDG_CONFIG_HOME}/zsh/conf.d/60-integrations.zsh
 
-# Zoxide (Smarter 'cd')
-# if command -v zoxide &> /dev/null; then
-#     eval "$(zoxide init zsh)"
-# fi
-
 # fzf Setup & Keybindings
 if command -v fzf &> /dev/null; then
-    # Source fzf, disabling the Ctrl-r keybinding (use atuin instead)
+    # Source fzf, disabling the Ctrl-r (atuin does that) and Alt-c keybindings
     FZF_CTRL_R_COMMAND= FZF_ALT_C_COMMAND= source <(fzf --zsh)
 
-    # Modern fzf preview defaults (uses 'eza' or 'ls' for directories, 'bat' or 'cat' for files)
     export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --inline-info"
-
-    # If I type a full query, and no matches, paste as command
-    export FZF_CTRL_R_OPTS="--bind enter:accept-or-print-query"
 
     # Use ripgrep (rg) as the backend for fzf to ignore .git/ and node_modules/
     if command -v rg &> /dev/null; then
         export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!{.git,node_modules}/*"'
     fi
-
-    export FZF_TMUX=0
 fi

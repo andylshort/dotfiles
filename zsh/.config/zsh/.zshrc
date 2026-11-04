@@ -5,9 +5,6 @@
 
 ZDOTDIR="${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}"
 
-# Common aliases and functionality
-[[ -f "$XDG_CONFIG_HOME/aliases" ]] && source "$XDG_CONFIG_HOME/aliases"
-
 # Source all files in conf.d in numerical order
 for file in "$ZDOTDIR/conf.d/"*.zsh; do
     source "$file"
