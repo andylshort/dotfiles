@@ -8,14 +8,8 @@ if ! command -v stow &> /dev/null; then
     echo "GNU Stow not installed. Please install it and try again."
     exit 1
 fi
-if ! command -v entr &> /dev/null; then
-    echo "entr not installed. Please install it and try again."
-    exit 1
-fi
 
 packages=(
-    common
-    
     bash
     ghostty
     git
@@ -40,6 +34,9 @@ mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
 # And Claude skills: without this stow would fold all of ~/.claude into the repo
 mkdir -p "$HOME/.claude/skills"
 
+# Links to files since removed from the repo (including whole packages, like the old
+# common/) are cleaned up by stow itself: it deletes broken links into the repo in every
+# directory it visits
 for pkg in "${packages[@]}"; do
     # Check if the folder actually exists before trying to stow it
     if [[ -d "$pkg" ]]; then
@@ -64,15 +61,13 @@ for hist in "zsh:.zsh_history" "bash:.bash_history"; do
     fi
 done
 
-# - Install tmux plugin manager and plugins
-TPM_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tpm"
-if [ ! -d "$TPM_DIR" ]; then
-    git clone https://github.com/tmux-plugins/tpm "$TPM_DIR"
-    bash "$TPM_DIR/bin/install_plugins"
+# - tmux and Vim no longer use plugins: remove TPM's clones (~/.config/tmux may be stowed back
+#   into this repo, where they'd otherwise show up as untracked)
+TMUX_PLUGINS="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins"
+if [[ -d "$TMUX_PLUGINS/tpm" ]]; then
+    echo "-> Removing tmux plugins (no longer used)"
+    rm -rf "$TMUX_PLUGINS"
 fi
-
-# - Install vim plugin manager and plugins
-vim -es -u $HOME/.vimrc +PlugInstall +qall
 
 # - Install Neovim (>= 0.12 for vim.pack) from the official release if the system one is
 #   missing or too old. Lives in ~/.local so it works on remotes without root; if the binary
@@ -136,8 +131,17 @@ if command -v nvim &> /dev/null; then
     fi
 fi
 
-# - Install fzf
-ln -sf $HOME/.fzf/bin/* $HOME/.local/bin/
+# - Install fzf (>= 0.48, for `fzf --zsh`) to ~/.fzf if there isn't a recent enough one. Its
+#   installer fetches the right prebuilt binary for the machine
+if ! fzf --zsh &> /dev/null; then
+    echo "-> Installing fzf to ~/.fzf"
+    if [[ -d "$HOME/.fzf/.git" ]]; then
+        git -C "$HOME/.fzf" pull -q --ff-only
+    else
+        git clone -q --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+    fi
+    "$HOME/.fzf/install" --bin && ln -sf "$HOME/.fzf/bin/fzf" "$HOME/.local/bin/fzf"
+fi
 
 # - Install starship prompt
 if ! command -v starship &> /dev/null; then
