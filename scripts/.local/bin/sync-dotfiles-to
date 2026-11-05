@@ -3,13 +3,30 @@
 # Usage: sync-dotfiles-to HOST...
 # HOST is anything ssh accepts: an alias, host or user@host. The username comes from
 # there or from ~/.ssh/config, like plain ssh.
-set -eu
+set -u
 (($#)) || { echo "Usage: ${0##*/} HOST..." >&2; exit 1; }
 
 DOTFILES="$HOME/dotfiles"
+# One SSH connection per host for both the copy and the install; LogLevel=ERROR hides
+# "Connection to HOST closed" but still shows real errors
+SSH=(ssh -o LogLevel=ERROR -o ControlMaster=auto -o "ControlPath=$HOME/.ssh/cm-%C" -o ControlPersist=10)
+if [[ -t 1 ]]; then bold=$'\e[1m' green=$'\e[32m' red=$'\e[31m' reset=$'\e[0m'
+else bold='' green='' red='' reset=''; fi
 
+results=()
 for host in "$@"; do
-    echo "-> $host"
-    rsync -az --delete --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "$host:dotfiles"
-    ssh -t "$host" 'cd ~/dotfiles && bash install.sh'
+    echo "${bold}${host}${reset}"
+    if ! "${SSH[@]}" "$host" true; then
+        results+=("${red}✗ $host (unreachable)${reset}")
+    elif ! rsync -az --delete -e "${SSH[*]}" --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "$host:dotfiles"; then
+        results+=("${red}✗ $host (copy failed)${reset}")
+    elif ! "${SSH[@]}" -t "$host" 'cd ~/dotfiles && bash install.sh'; then
+        results+=("${red}✗ $host (install failed)${reset}")
+    else
+        results+=("${green}✓ $host${reset}")
+    fi
 done
+
+echo
+printf '%s\n' "${results[@]}"
+[[ "${results[*]}" != *✗* ]]
