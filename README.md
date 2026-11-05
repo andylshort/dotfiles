@@ -9,6 +9,8 @@ Run `install.sh` (or `sync-dotfiles-to HOST...` for remotes). It links the confi
 - zsh and bash have built-in prompts (no starship); zsh plugins, fzf and atuin load only if present
 - Neovim < 0.12, or no Neovim, falls back to the plugin-free `~/.vimrc`
 
+Remotes get a mirror of the repo minus what `.rsync-filter` leaves out (`work/`, `.git`, laptop-only scripts), which is also removed from them if an earlier sync left it there.
+
 `bash/.bashrc` and `vim/.vimrc` also work as single files on their own: `scp bash/.bashrc vim/.vimrc HOST:`.
 
 ## Files You Can to Provide

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copy the dotfiles to remote machines and run install.sh there.
+# Mirror the dotfiles to remote machines and run install.sh there. work/ and anything else
+# in .rsync-filter is laptop-only: never sent, and removed from remotes.
 # Usage: sync-dotfiles-to HOST...
 # HOST is anything ssh accepts: an alias, host or user@host. The username comes from
 # there or from ~/.ssh/config, like plain ssh.
@@ -13,12 +14,19 @@ SSH=(ssh -o LogLevel=ERROR -o ControlMaster=auto -o "ControlPath=$HOME/.ssh/cm-%
 if [[ -t 1 ]]; then bold=$'\e[1m' green=$'\e[32m' red=$'\e[31m' reset=$'\e[0m'
 else bold='' green='' red='' reset=''; fi
 
+# The sync deletes on the remote whatever the filter leaves out (including work/), so never
+# point it back at this machine's own ~/dotfiles
+self_id=$(cat /etc/machine-id)
+
 results=()
 for host in "$@"; do
     echo "${bold}${host}${reset}"
-    if ! "${SSH[@]}" "$host" true; then
+    if ! remote_id=$("${SSH[@]}" "$host" cat /etc/machine-id); then
         results+=("${red}✗ $host (unreachable)${reset}")
-    elif ! rsync -az --delete -e "${SSH[*]}" --exclude-from="$DOTFILES/.rsync-exclude" "$DOTFILES/" "$host:dotfiles"; then
+    elif [[ $remote_id == "$self_id" ]]; then
+        echo "  This is the machine you're syncing from; skipping"
+        results+=("${red}✗ $host (this machine)${reset}")
+    elif ! rsync -az --delete -e "${SSH[*]}" --filter="merge $DOTFILES/.rsync-filter" "$DOTFILES/" "$host:dotfiles"; then
         results+=("${red}✗ $host (copy failed)${reset}")
     elif ! "${SSH[@]}" -t "$host" 'cd ~/dotfiles && bash install.sh'; then
         results+=("${red}✗ $host (install failed)${reset}")

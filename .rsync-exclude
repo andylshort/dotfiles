@@ -1,8 +1,0 @@
-scripts/work/*
-scripts/.local/bin/ssh-autostart-plasma.sh
-scripts/.local/bin/sync-dotfiles-to
-work/*
-.gitignore
-.rsync-exclude
-README.md
-.zcompdump*

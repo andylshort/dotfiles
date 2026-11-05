@@ -1,0 +1,12 @@
+# Filter rules for sync-dotfiles-to (see FILTER RULES in rsync(1)). Remotes get an exact mirror
+# of the repo except:
+# "-s": not sent, and removed from the remote if an earlier sync left it there
+-s .git/
+-s work/
+-s README.md
+-s .gitignore
+-s .rsync-filter
+-s scripts/.local/bin/sync-dotfiles-to
+-s scripts/.local/bin/ssh-autostart-plasma.sh
+# "P": created on the remote by install.sh, so kept
+P zsh/.local/share/zsh/plugins/
