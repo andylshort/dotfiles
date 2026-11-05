@@ -6,6 +6,11 @@
 
 [[ $- == *i* ]] || return
 
+# System defaults first, so everything below overrides them. On RHEL-family machines this is
+# what sets up e.g. the `module` command in non-login shells like tmux panes (Debian's bash
+# reads /etc/bash.bashrc by itself)
+[[ -f /etc/bashrc ]] && . /etc/bashrc
+
 # Environment
 for d in "$HOME/bin" "$HOME/.local/bin"; do
     [[ -d $d && ":$PATH:" != *":$d:"* ]] && PATH="$d:$PATH"
