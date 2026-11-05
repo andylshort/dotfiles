@@ -1,9 +1,9 @@
 # Required
-stow
 git
 zsh
 
 # Optional: used when installed, skipped otherwise
+stow
 neovim
 tree-sitter-cli
 tmux

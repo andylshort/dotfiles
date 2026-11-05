@@ -4,7 +4,7 @@ Might try to generalise, compartmentalise, etc. Who knows?
 
 ## Install
 
-Run `install.sh` (or `sync-dotfiles-to HOST` for a remote). It stows the configs and sets up optional extras, but never downloads binaries: install tools from the system's packages (see `required-packages.txt`). Everything works without the optional ones, so the same setup runs on any machine:
+Run `install.sh` (or `sync-dotfiles-to HOST...` for remotes). It links the configs into `$HOME` (with GNU Stow if installed, otherwise itself; existing files are kept as `*.bak`) and sets up optional extras, but never downloads binaries: install tools from the system's packages (see `required-packages.txt`). Everything works without the optional ones, so the same setup runs on any machine:
 
 - zsh and bash have built-in prompts (no starship); zsh plugins, fzf and atuin load only if present
 - Neovim < 0.12, or no Neovim, falls back to the plugin-free `~/.vimrc`
