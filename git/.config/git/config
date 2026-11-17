@@ -67,7 +67,27 @@
 [alias]
     latest-branches = "branch --sort=-committerdate --format='%(align:18,left)%(committerdate:relative)%(end)%(align:20,left)%(authorname)%(end)%(refname:short)'"
     lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-    delete-branch = "!f() { git branch -D \"$@\"; git push origin --delete \"$@\"; }; f"
+    # Delete branches locally and on origin. Each side of each branch is
+    # handled on its own: missing ones are skipped, and one failure doesn't
+    # stop the rest. Exits non-zero if any delete actually failed.
+    delete-branch = "!f() { \
+        rc=0; \
+        for b in \"$@\"; do \
+            if git show-ref -q --verify \"refs/heads/$b\"; then \
+                git branch -D \"$b\" || rc=1; \
+            else \
+                echo \"local: $b not found, skipping\"; \
+            fi; \
+            git ls-remote -q --exit-code origin \"refs/heads/$b\" >/dev/null; \
+            case $? in \
+                0) git push origin --delete \"$b\" || rc=1 ;; \
+                2) echo \"origin: $b not found, skipping\"; \
+                   git branch -q -dr \"origin/$b\" 2>/dev/null ;; \
+                *) echo \"origin: can't check $b\" >&2; rc=1 ;; \
+            esac; \
+        done; \
+        return $rc; \
+    }; f"
     up = !git fetch --no-recurse-submodules origin && git rebase origin/HEAD && git submodule sync --recursive && git submodule update --init --recursive
 
 [include]
