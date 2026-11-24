@@ -19,6 +19,12 @@ font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 font-thicken = true
 
+# Disable programming ligatures (>= -> != etc.) so each character is its own cell
+# JetBrainsMono Nerd Font already has code ligatures, so these interfere
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
 mouse-hide-while-typing = true
 
 app-notifications = no-clipboard-copy
