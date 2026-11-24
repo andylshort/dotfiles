@@ -30,8 +30,3 @@ These are automatically loaded by the configuration files of the associated prog
 
 Both are also linked into the `claude-box` sandbox user's `~/.claude/skills`, read-only.
 
-## TODO
-- [x] Integrate `fzf` into install and workflow
-- [x] Exclude certain files from certain machines/workflows (e.g. between computers, personal/work)
-- [x] Integrate OSC52 support into tmux, then [vim](https://github.com/ojroques/vim-oscyank)
-
