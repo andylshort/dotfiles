@@ -159,25 +159,25 @@ map("i", "<Tab>", function() return vim.fn.pumvisible() == 1 and "<C-n>" or "<Ta
 map("i", "<S-Tab>", function() return vim.fn.pumvisible() == 1 and "<C-p>" or "<S-Tab>" end, { expr = true })
 
 -- - lazygit in a floating terminal
-if vim.fn.executable("lazygit") == 1 then
-    map("n", "<C-g>", function()
-        vim.cmd("silent! wall")
-        local buf = vim.api.nvim_create_buf(false, true)
-        local w, h = math.floor(vim.o.columns * 0.9), math.floor(vim.o.lines * 0.9)
-        vim.api.nvim_open_win(buf, true, {
-            relative = "editor", width = w, height = h,
-            row = math.floor((vim.o.lines - h) / 2), col = math.floor((vim.o.columns - w) / 2),
-        })
-        vim.fn.jobstart({ "lazygit" }, {
-            term = true,
-            on_exit = function()
-                vim.api.nvim_buf_delete(buf, { force = true })
-                vim.cmd("checktime")
-            end,
-        })
-        vim.cmd.startinsert()
-    end, { desc = "lazygit" })
-end
+-- if vim.fn.executable("lazygit") == 1 then
+--     map("n", "<C-g>", function()
+--         vim.cmd("silent! wall")
+--         local buf = vim.api.nvim_create_buf(false, true)
+--         local w, h = math.floor(vim.o.columns * 0.9), math.floor(vim.o.lines * 0.9)
+--         vim.api.nvim_open_win(buf, true, {
+--             relative = "editor", width = w, height = h,
+--             row = math.floor((vim.o.lines - h) / 2), col = math.floor((vim.o.columns - w) / 2),
+--         })
+--         vim.fn.jobstart({ "lazygit" }, {
+--             term = true,
+--             on_exit = function()
+--                 vim.api.nvim_buf_delete(buf, { force = true })
+--                 vim.cmd("checktime")
+--             end,
+--         })
+--         vim.cmd.startinsert()
+--     end, { desc = "lazygit" })
+-- end
 
 -- LSP
 -- - Inline diagnostics
