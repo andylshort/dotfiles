@@ -9,7 +9,7 @@ command = /usr/bin/zsh
 shell-integration = zsh
 shell-integration-features = ssh-env
 
-theme = "Dracula"
+theme = "Catppuccin Macchiato"
 window-theme = dark
 window-decoration = client
 window-vsync = true

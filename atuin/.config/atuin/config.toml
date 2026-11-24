@@ -17,3 +17,6 @@ enabled = false
 
 [dotfiles]
 enabled = false
+
+[theme]
+name = "catppuccin-macchiato-mauve"

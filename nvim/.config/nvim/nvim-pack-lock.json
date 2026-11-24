@@ -1,8 +1,8 @@
 {
   "plugins": {
-    "dracula": {
-      "rev": "2cf60539da5bea64be8adf8a73a103e6e5f7f12c",
-      "src": "https://github.com/dracula/vim"
+    "catppuccin": {
+      "rev": "edefef779ab08ce1a4a404713e3012b0d202bd35",
+      "src": "https://github.com/catppuccin/nvim"
     },
     "mini.nvim": {
       "rev": "ed8683521996657ce774e5eec9d2f9b1b5ecef82",

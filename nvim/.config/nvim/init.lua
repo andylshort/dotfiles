@@ -26,7 +26,7 @@ vim.pack.add({
     "https://github.com/neovim/nvim-lspconfig",
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
     "https://github.com/christoomey/vim-tmux-navigator", -- Pairs with the tmux plugin
-    { src = "https://github.com/dracula/vim", name = "dracula" },
+    { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 }, { confirm = false })
 
 -- Options
@@ -55,7 +55,7 @@ o.shiftwidth = 0   -- Use tabstop
 o.softtabstop = -1 -- Use tabstop
 o.smartindent = true
 
-vim.cmd.colorscheme("dracula")
+vim.cmd.colorscheme("catppuccin-macchiato")
 
 -- - Clipboard: system clipboard locally, OSC 52 over SSH (tmux has set-clipboard on)
 o.clipboard = "unnamedplus"
