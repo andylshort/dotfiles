@@ -52,6 +52,8 @@ alias gfo='git fetch origin --recurse-submodules' grb='git rebase' grbm='git reb
 env() { if (( $# )); then command env "$@"; else command env | sort; fi; } # Sorted listing
 mkcd() { mkdir -p -- "$1" && cd -- "$1"; }
 reload() { source "$ZDOTDIR/.zshrc" && echo 'zsh configuration reloaded.'; }
+alias v="$EDITOR"
+alias nv="$EDITOR"
 
 # Optional tools. Their init scripts are cached and regenerated when the tool is updated,
 # saving a process per shell
