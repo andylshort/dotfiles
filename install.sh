@@ -15,7 +15,6 @@ packages=(
 
     atuin
     claude
-    kde
 )
 
 # Completions live here; create it before stowing so stow links individual files into
@@ -173,9 +172,20 @@ if command -v atuin &> /dev/null; then
     atuin gen-completions --shell zsh --out-dir "$COMP_DIR"
 fi
 
-# - Enable KWin scripts
+# - Remove the old first-window-desktop KWin script (sent apps to named virtual desktops,
+#   which no longer exist): its link, its enabled flag, and the copy KWin has loaded
+#   (stow may have folded the link into any of these directories, now left dangling)
+kwin_dir="${XDG_DATA_HOME:-$HOME/.local/share}/kwin"
+for old in "$kwin_dir/scripts/first-window-desktop" "$kwin_dir/scripts" "$kwin_dir"; do
+    if [[ -L "$old" && ! -e "$old" ]]; then
+        say "Removed $(tilde "$old") (no longer used)"
+        rm "$old"
+    fi
+done
 if command -v kwriteconfig6 &> /dev/null; then
-    kwriteconfig6 --file kwinrc --group Plugins --key first-window-desktopEnabled true
+    kwriteconfig6 --file kwinrc --group Plugins --key first-window-desktopEnabled --delete
+    command -v qdbus-qt6 &> /dev/null &&
+        qdbus-qt6 org.kde.KWin /Scripting org.kde.kwin.Scripting.unloadScript first-window-desktop &> /dev/null
 fi
 
 
