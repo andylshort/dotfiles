@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Open files in Neovim in a new window of the most recently used tmux session, or in a new
+# Ghostty window if tmux isn't running. Registered as the default app for text files by
+# tmux-edit.desktop, so clicking a file:// link (e.g. in Claude Code's output) lands in tmux
+set -euo pipefail
+
+dir="$HOME"
+[[ $# -gt 0 ]] && dir="$(dirname -- "$(realpath -m -- "$1")")"
+
+if tmux has-session &> /dev/null; then
+    tmux new-window -c "$dir" -- nvim -- "$@"
+else
+    cd "$dir"
+    exec ghostty -e nvim -- "$@"
+fi

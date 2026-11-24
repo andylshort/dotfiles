@@ -8,5 +8,7 @@
 -s .rsync-filter
 -s scripts/.local/bin/sync-dotfiles-to
 -s scripts/.local/bin/ssh-autostart-plasma.sh
+-s nvim/.local/bin/tmux-edit
+-s nvim/.local/share/applications/tmux-edit.desktop
 # "P": created on the remote by install.sh, so kept
 P zsh/.local/share/zsh/plugins/

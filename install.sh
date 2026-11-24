@@ -24,6 +24,8 @@ COMP_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh/completions"
 mkdir -p "$COMP_DIR"
 # Likewise for autostart entries, so ones added via System Settings don't land in the repo
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/autostart"
+# And desktop entries, which KDE also writes here
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}/applications"
 # And Claude skills: without this stow would fold all of ~/.claude into the repo
 mkdir -p "$HOME/.claude/skills"
 
@@ -152,6 +154,18 @@ if nvim --headless -u NONE '+lua os.exit(vim.fn.has("nvim-0.12") == 1 and 0 or 1
     if grep -qiE 'error|fail' "$NVIM_LOG"; then
         say "Neovim plugin/parser setup had errors; see $(tilde "$NVIM_LOG")"
     fi
+fi
+
+# - Open text files (e.g. clicked file:// links) in Neovim in tmux: make tmux-edit.desktop the
+#   default for each type it lists. xdg-mime edits ~/.config/mimeapps.list, which isn't stowed
+#   since KDE rewrites it. Only on desktops: remotes have no xdg-mime or no session
+desktop="${XDG_DATA_HOME:-$HOME/.local/share}/applications/tmux-edit.desktop"
+if [[ -f "$desktop" && -n "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]] && command -v xdg-mime &> /dev/null; then
+    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"
+    IFS=';' read -ra types < <(sed -n 's/^MimeType=//p' "$desktop")
+    # Quiet: under KDE it looks for a Qt 5 qtpaths for each type, then falls back to ~/.config
+    xdg-mime default tmux-edit.desktop "${types[@]}" 2> /dev/null ||
+        say "Couldn't set tmux-edit as the default for text files"
 fi
 
 # - atuin completions

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Neovim (tmux)
+Comment=Edit text files in Neovim in a new tmux window
+Exec=tmux-edit %F
+Icon=nvim
+Terminal=false
+NoDisplay=true
+Categories=Utility;TextEditor;
+MimeType=text/plain;text/markdown;text/x-csrc;text/x-chdr;text/x-c++src;text/x-c++hdr;text/x-cuda;text/x-python;text/x-lua;text/x-cmake;text/x-makefile;text/x-patch;text/x-log;application/x-shellscript;application/json;application/toml;application/x-yaml;application/xml;
