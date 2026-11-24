@@ -9,6 +9,7 @@ end
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+vim.g.tmux_navigator_no_mappings = 1 -- Alt-h/j/k/l instead of Ctrl, mapped below to match tmux.conf
 
 -- Plugins
 -- - Pinned in nvim-pack-lock.json (commit it); update with :lua vim.pack.update()
@@ -152,6 +153,11 @@ map("x", "<leader>c", "gc", { remap = true, desc = "Toggle comment" })
 map("n", "gd", vim.lsp.buf.definition, { desc = "Goto definition" })
 map("n", "gD", vim.lsp.buf.declaration, { desc = "Goto declaration" })
 map("n", "gy", vim.lsp.buf.type_definition, { desc = "Goto type definition" })
+
+-- - Alt-h/j/k/l: move between splits, then on into neighbouring tmux panes (tmux.conf)
+for key, dir in pairs({ h = "Left", j = "Down", k = "Up", l = "Right" }) do
+    map("n", "<M-" .. key .. ">", "<Cmd>TmuxNavigate" .. dir .. "<CR>", { desc = "Go to split/pane " .. dir:lower() })
+end
 
 -- - Misc
 map("n", "<Esc>", "<Cmd>nohlsearch<CR><Esc>")

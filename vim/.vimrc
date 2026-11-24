@@ -178,7 +178,7 @@ if exists('##TextYankPost') && executable('base64')
     augroup END
 endif
 
-" Ctrl-h/j/k/l move between splits, then on into neighbouring tmux panes at the edges
+" Alt-h/j/k/l move between splits, then on into neighbouring tmux panes at the edges
 " (tmux's side of this is in tmux.conf)
 function! s:Navigate(dir) abort
     let l:win = winnr()
@@ -188,7 +188,9 @@ function! s:Navigate(dir) abort
     endif
 endfunction
 for s:k in ['h', 'j', 'k', 'l']
-    execute 'nnoremap <silent> <C-' . s:k . '> :call <SID>Navigate("' . s:k . '")<CR>'
+    " Terminal Vim sees Alt-x as Esc then x; teach it the pair (Neovim already knows)
+    if !has('nvim') && !has('gui_running') | execute "set <M-" . s:k . ">=\e" . s:k | endif
+    execute 'nnoremap <silent> <M-' . s:k . '> :call <SID>Navigate("' . s:k . '")<CR>'
 endfor
 
 " Leader mappings, following the Neovim config where a built-in equivalent exists
