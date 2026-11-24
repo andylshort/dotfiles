@@ -224,3 +224,9 @@ end
 vim.lsp.config("lua_ls", {
     settings = { Lua = { runtime = { version = "LuaJIT" }, workspace = { library = { vim.env.VIMRUNTIME } } } },
 })
+
+-- No remote plugins in use; skip provider detection (also silences :checkhealth)
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
