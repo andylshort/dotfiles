@@ -2,6 +2,7 @@
 Type=Application
 Name=Ghostty (tmux)
 Comment=Open Ghostty attached to the "dev" tmux session
-Exec=ghostty -e tmux new-session -A -s dev
+# Fall back to a shell when tmux exits or detaches, so the window stays open
+Exec=ghostty -e zsh -c "tmux new-session -A -s dev; exec zsh"
 Icon=com.mitchellh.ghostty
 Terminal=false
