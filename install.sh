@@ -189,6 +189,31 @@ if command -v kwriteconfig6 &> /dev/null; then
 fi
 
 
+# - Firefox prefs (firefox/user.js): the profile directory has a random name, so it can't be
+#   stowed; link it into the profile each Firefox install uses (from installs.ini)
+ff_dir="$HOME/.mozilla/firefox"
+if [[ -f "$ff_dir/installs.ini" ]]; then
+    while IFS= read -r profile; do
+        [[ -d "$ff_dir/$profile" ]] || continue
+        target="$ff_dir/$profile/user.js"
+        [[ "$(realpath -m "$target")" == "$repo/firefox/user.js" ]] && continue
+        [[ -e "$target" && ! -L "$target" ]] && mv "$target" "$target.bak" &&
+            say "Backed up $(tilde "$target") -> $(tilde "$target").bak"
+        ln -sfn "$repo/firefox/user.js" "$target"
+        say "Linked $(tilde "$target") (restart Firefox to apply)"
+    done < <(sed -n 's/^Default=//p' "$ff_dir/installs.ini" | sort -u)
+fi
+
+# - GTK apps: always-visible scrollbars, not overlay ones that appear on hover. KDE rewrites
+#   the settings.ini files (so they aren't stowed) but keeps keys it doesn't manage
+if command -v kwriteconfig6 &> /dev/null; then
+    for v in 3.0 4.0; do
+        kwriteconfig6 --file "${XDG_CONFIG_HOME:-$HOME/.config}/gtk-$v/settings.ini" \
+            --group Settings --key gtk-overlay-scrolling false
+    done
+fi
+
+
 # Work override
 if [[ -f "work/install.sh" ]]; then
     ./work/install.sh

@@ -12,3 +12,4 @@
 -s nvim/.local/share/applications/tmux-edit.desktop
 # "P": created on the remote by install.sh, so kept
 P zsh/.local/share/zsh/plugins/
+-s firefox/
